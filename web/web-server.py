@@ -7,6 +7,8 @@ from src.dao import AppDao
 from src.dao import StatusDao
 from src.util import StringUtil
 from src.util import CategoryUtil
+from src.controller import AppController
+from src.controller import StatusController
 
 render = web.template.render('templates/', base='layout')
 render_without_layout = web.template.render('templates/')
@@ -16,14 +18,9 @@ urls = (
     '/status/?', 'status',
     '/chart/?', 'chart',
     '/data/?', 'data',
-    '/app/get_category_chart/?', 'get_category_chart',
-    '/app/get_platform_chart/?','get_platform_chart',
-    '/app/get_platform_chart_unique/?','get_platform_chart_unique',
-    '/status/get_status_list/?','get_status_list',    
-    '/status/get_status_list_by_platform/(.+)','get_status_list_by_platform',
-    '/status/get_current_status_by_platform/(.+)','get_current_status_by_platform',
-    '/status/get_current_status/','get_current_status',
     '/log/', 'get_log',
+    '/api/app', AppController.app_app,
+    '/api/status', StatusController.app_status,
 
 )
 
