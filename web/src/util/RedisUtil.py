@@ -34,12 +34,12 @@ class RedisClient(object):
     '''
     Common Operation:
         * 
-		* get_items(key, start, end, type): 
-			返回列表中start起始，end结束的元素。
-			type可选值为`list` | `sorted_set`
-		* get_length(key,type): 
-			获取队列的长度
-			type可选值为`list` | `set` | `hash`
+        * get_items(key, start, end, type): 
+            返回列表中start起始，end结束的元素。
+            type可选值为`list` | `sorted_set`
+        * get_length(key,type): 
+            获取队列的长度
+            type可选值为`list` | `set` | `hash`
         * delete(key1,key2,key3,...): 
             删除key及所对应的数据。如果删除的key不存在，则直接忽略。
         * exists(key):
@@ -59,7 +59,7 @@ class RedisClient(object):
    Unimplement:
         dump | restore | expire | expireat | keys | migrate | move | object | persist |
         pexpire | pexpireat | pttl | randomkey | renamenx | ttl | sort | scan
-	'''
+    '''
 
     def get_items(self, redis_key, start, end, redis_type='list'):
         '''
@@ -94,32 +94,32 @@ class RedisClient(object):
         return self.redis_client.type(redis_key)
 
     '''
-	Key-value操作:
-		* set(key,value): 
-			将key和value对应。如果key已经存在了，它会被覆盖，F而不管它是什么类型。
-		* mset(key1,value1,key2,value2,key3=value3,....): 
-			一次性赋值set多个key-value, 如果已存在，则会覆盖。
-		* set_range(key,offset,value): 
-			这个命令的作用是覆盖key对应的string的一部分，从指定的offset处开始，覆盖value的长度。
-			如果offset比当前key对应string还要长，那这个string后面就补0以达到offset。
-			不存在的keys被认为是空字符串，所以这个命令可以确保key有一个足够大的字符串，能在offset处设置value。
-		* get(key): 
-			返回key的value。如果key不存在，返回特殊值nil。如果key的value不是string，就返回错误，因为GET只处理string类型的values
-		* gets(keys): 
-			返回给定key的value，key可以输入多个，例如gets(key1,key2,key3.....)
-		* get_range(key,start, end): 
-			获取存储在key上的值的一个子字符串
-		* append(key, value): 
-			如果key已经存在，并且值为字符串，那么这个命令会把value追加到原来值（value）的结尾。 
-			如果 key 不存在，那么它将首先创建一个空字符串的key，再执行追加操作，这种情况 APPEND 将类似于 SET 操作。
-		* incr(key,amount): 
-			对key对应的数字做加1操作。
-			如果key不存在，那么在操作之前，这个key对应的值会被置为0。
-			如果key有一个错误类型的value或者是一个不能表示成数字的字符串，就返回错误。
-			注: amount可以为负值。
-	Unimplement:
-		getbit | setex | bitcount | setnx | bitop | getset | msetnx | incrbyfloat
-	'''
+    Key-value操作:
+        * set(key,value): 
+            将key和value对应。如果key已经存在了，它会被覆盖，F而不管它是什么类型。
+        * mset(key1,value1,key2,value2,key3=value3,....): 
+            一次性赋值set多个key-value, 如果已存在，则会覆盖。
+        * set_range(key,offset,value): 
+            这个命令的作用是覆盖key对应的string的一部分，从指定的offset处开始，覆盖value的长度。
+            如果offset比当前key对应string还要长，那这个string后面就补0以达到offset。
+            不存在的keys被认为是空字符串，所以这个命令可以确保key有一个足够大的字符串，能在offset处设置value。
+        * get(key): 
+            返回key的value。如果key不存在，返回特殊值nil。如果key的value不是string，就返回错误，因为GET只处理string类型的values
+        * gets(keys): 
+            返回给定key的value，key可以输入多个，例如gets(key1,key2,key3.....)
+        * get_range(key,start, end): 
+            获取存储在key上的值的一个子字符串
+        * append(key, value): 
+            如果key已经存在，并且值为字符串，那么这个命令会把value追加到原来值（value）的结尾。 
+            如果 key 不存在，那么它将首先创建一个空字符串的key，再执行追加操作，这种情况 APPEND 将类似于 SET 操作。
+        * incr(key,amount): 
+            对key对应的数字做加1操作。
+            如果key不存在，那么在操作之前，这个key对应的值会被置为0。
+            如果key有一个错误类型的value或者是一个不能表示成数字的字符串，就返回错误。
+            注: amount可以为负值。
+    Unimplement:
+        getbit | setex | bitcount | setnx | bitop | getset | msetnx | incrbyfloat
+    '''
 
     def set(self, redis_key, redis_value):
         return self.redis_client.set(redis_key, redis_value)
@@ -156,48 +156,57 @@ class RedisClient(object):
             return self.redis_client.incr(redis_key, amount)
 
     '''
-	List操作:
-		* get_item(key,index): 
-			返回列表里index位置存储值。
-			下标是从0开始索引的，所以0是表示第一个元素，1表示第二个元素，并以此类推。
-			负数索引用于指定从列表尾部开始索引的元素。
-			在这种方法下，-1表示最后一个元素，-2表示倒数第二个元素，并以此往前推。
-		* insert_item(key,refvalue,value,where): 
-			把value插入存于key的列表中在基准值refvalue的前面或后面。
-			where为'before'或'after', 默认为'after'
-		* set_item(key,index,value):
-			设置index位置的list元素的值为value。
-			当index超出范围时会返回一个error。
-		* push_items(key,value1,value2,...): 
-			向存于key的列表的尾部插入所有指定的值。
-			如果key不存在，那么会创建一个空的列表然后再进行push操作。
-			当 key 保存的不是一个列表，那么会返回一个错误。
-		* lpush_items(key,value1,value2,...): 
-			将所有指定的值插入到存于 key 的列表的头部。
-			如果 key 不存在，那么在进行 push 操作前会创建一个空列表。 如果 key 对应的值不是一个 list 的话，那么会返回一个错误。
-		* push_list(key,list): 
-			同push_items，参数为list
-		* lpush_list(key,list): 
-			同lpush_items，参数为list
-		* pop_item(key):
-			移除并返回存于 key 的 list 的最后一个元素。
-		* lpop_item(key): 
-			移除并且返回key对应的 list 的第一个元素。
-		* remove_item(key,value,count): 
-			从存于key的列表里移除前count次出现的值为value的元素。 这个count参数通过下面几种方式影响这个操作：
-			count > 0: 从头往尾移除值为 value 的元素。
-			count < 0: 从尾往头移除值为 value 的元素。
-			count = 0: 移除所有值为 value 的元素。
-			count默认为1
-			比如， LREM list -2 "hello" 会从存于 list 的列表里移除最后两个出现的 "hello"。
-			需要注意的是，如果list里没有存在key就会被当作空list处理，所以当 key 不存在的时候，这个命令会返回 0。
-	Unimplement:
-		blpop | brpop | brpoplpush | lpushx | ltrim | rpoplpush
-	'''
+    List操作:
+        * get_item(key,index): 
+            返回列表里index位置存储值。
+            下标是从0开始索引的，所以0是表示第一个元素，1表示第二个元素，并以此类推。
+            负数索引用于指定从列表尾部开始索引的元素。
+            在这种方法下，-1表示最后一个元素，-2表示倒数第二个元素，并以此往前推。
+        * get_items_with_index_list(key, list_of_index):
+            返回List，list中包含列表里index位置存储值。
+        * insert_item(key,refvalue,value,where): 
+            把value插入存于key的列表中在基准值refvalue的前面或后面。
+            where为'before'或'after', 默认为'after'
+        * set_item(key,index,value):
+            设置index位置的list元素的值为value。
+            当index超出范围时会返回一个error。
+        * push_items(key,value1,value2,...): 
+            向存于key的列表的尾部插入所有指定的值。
+            如果key不存在，那么会创建一个空的列表然后再进行push操作。
+            当 key 保存的不是一个列表，那么会返回一个错误。
+        * lpush_items(key,value1,value2,...): 
+            将所有指定的值插入到存于 key 的列表的头部。
+            如果 key 不存在，那么在进行 push 操作前会创建一个空列表。 如果 key 对应的值不是一个 list 的话，那么会返回一个错误。
+        * push_list(key,list): 
+            同push_items，参数为list
+        * lpush_list(key,list): 
+            同lpush_items，参数为list
+        * pop_item(key):
+            移除并返回存于 key 的 list 的最后一个元素。
+        * lpop_item(key): 
+            移除并且返回key对应的 list 的第一个元素。
+        * remove_item(key,value,count): 
+            从存于key的列表里移除前count次出现的值为value的元素。 这个count参数通过下面几种方式影响这个操作：
+            count > 0: 从头往尾移除值为 value 的元素。
+            count < 0: 从尾往头移除值为 value 的元素。
+            count = 0: 移除所有值为 value 的元素。
+            count默认为1
+            比如， LREM list -2 "hello" 会从存于 list 的列表里移除最后两个出现的 "hello"。
+            需要注意的是，如果list里没有存在key就会被当作空list处理，所以当 key 不存在的时候，这个命令会返回 0。
+    Unimplement:
+        blpop | brpop | brpoplpush | lpushx | ltrim | rpoplpush
+    '''
 
     def get_item(self, redis_key, redis_index):
         return self.redis_client.lindex(redis_key, redis_index)
 
+    def get_items_with_index_list(self, redis_key, redis_index_list):
+        pipe = self.redis_client.pipeline()
+        items = []
+        for redis_index in redis_index_list:
+            pipe.lindex(redis_key, redis_index)
+        return pipe.execute()
+  
     def insert_item(self, redis_key, refvalue, redis_value, where='after'):
         return self.redis_client.linsert(redis_key, where, refvalue, redis_value)
 
@@ -205,10 +214,10 @@ class RedisClient(object):
         return self.redis_client.lset(redis_key, redis_index, redis_value)
 
     def push_items(self, redis_key, *redis_values):
-        return self.redis_client.rpush(redis_key, *redis_value)
+        return self.redis_client.rpush(redis_key, *redis_values)
 
     def lpush_items(self, redis_key, *redis_values):
-        return self.redis_client.lpush(redis_key, *redis_value)
+        return self.redis_client.lpush(redis_key, *redis_values)
 
     def push_list(self, redis_key, redis_list):
         return self.redis_client.rpush(redis_key, *redis_list)
@@ -226,48 +235,48 @@ class RedisClient(object):
         return self.redis_client.lrem(redis_key, count, redis_value)
 
     '''
-	Set操作:
-		* sset(key,member1,member2,...):
-			添加一个或多个指定的member元素到集合的key中.
-			指定的一个或者多个元素member如果已经在集合key中存在则忽略.
-			如果集合key不存在，则新建集合key,并添加member元素到集合key中.
-			如果key的类型不是集合则返回错误.
-		* sdiff(key1,key2,key3,...):
-			key1的集合与(key2,key3,...)的集合的补集，即A-B={x|x∈A，x∉B'}
-		* sinter(key1,key2,key3,...)
-			key1的集合与(key2,key3,...)的集合的交集，即A∩B={x|x∈A,且x∈B}
-		* sunion(key1,key2,key3,...):
-			key1的集合与(key2,key3,...)的集合的并集，即即A∪B={x|x∈A,或x∈B}
-		* sexist(key, member):
-			检查member是否在当前结合中
-		* sget_all(key):
-			获取当前key下的集合所有元素
-		* smove(src, dst, member):
-			将member从src集合移动到dst集合中.
-			如果src集合不存在或者不包含指定的元素,这smove命令不执行任何操作并且返回0
-			否则对象将会从src集合中移除，并添加到dst集合中去
-			如果dst集合已经存在该元素，则smove命令仅将该元素充src集合中移除
-			如果src或dst不是集合类型，则返回错误
-		* spop(key):
-			从集合中随机移除并返回一个元素
-		* srandmember(key, number):
-			仅提供key参数，那么随机返回key集合中的一个元素.
-			Redis2.6开始，可以接受number参数
-			如果number是整数且小于元素的个数,则返回含有number个不同的随机元素的数组
-			如果number是个整数且大于集合中元素的个数时,仅返回整个集合的所有元素
-			当number是负数,则会返回一个包含number的绝对值的个数元素的数组
-			如果number的绝对值大于元素的个数,则返回的结果集里会出现一个元素出现多次的情况
-			仅提供key参数时,该命令作用类似于SPOP命令, 不同的是SPOP命令会将被选择的随机元素从集合中移除, 
-			而SRANDMEMBER仅仅是返回该随记元素,而不做任何操作.
-		* sdelete(key, member1, member2):
-			在key集合中移除指定的元素
-			如果指定的元素不是key集合中的元素则忽略
-			如果key集合不存在则被视为一个空的集合，该命令返回0.
-			如果key的类型不是一个集合,则返回错误.
-	Unimplement:
-		sdiffstore | sinterstore | smove | sunionstore | sscan
+    Set操作:
+        * sset(key,member1,member2,...):
+            添加一个或多个指定的member元素到集合的key中.
+            指定的一个或者多个元素member如果已经在集合key中存在则忽略.
+            如果集合key不存在，则新建集合key,并添加member元素到集合key中.
+            如果key的类型不是集合则返回错误.
+        * sdiff(key1,key2,key3,...):
+            key1的集合与(key2,key3,...)的集合的补集，即A-B={x|x∈A，x∉B'}
+        * sinter(key1,key2,key3,...)
+            key1的集合与(key2,key3,...)的集合的交集，即A∩B={x|x∈A,且x∈B}
+        * sunion(key1,key2,key3,...):
+            key1的集合与(key2,key3,...)的集合的并集，即即A∪B={x|x∈A,或x∈B}
+        * sexist(key, member):
+            检查member是否在当前结合中
+        * sget_all(key):
+            获取当前key下的集合所有元素
+        * smove(src, dst, member):
+            将member从src集合移动到dst集合中.
+            如果src集合不存在或者不包含指定的元素,这smove命令不执行任何操作并且返回0
+            否则对象将会从src集合中移除，并添加到dst集合中去
+            如果dst集合已经存在该元素，则smove命令仅将该元素充src集合中移除
+            如果src或dst不是集合类型，则返回错误
+        * spop(key):
+            从集合中随机移除并返回一个元素
+        * srandmember(key, number):
+            仅提供key参数，那么随机返回key集合中的一个元素.
+            Redis2.6开始，可以接受number参数
+            如果number是整数且小于元素的个数,则返回含有number个不同的随机元素的数组
+            如果number是个整数且大于集合中元素的个数时,仅返回整个集合的所有元素
+            当number是负数,则会返回一个包含number的绝对值的个数元素的数组
+            如果number的绝对值大于元素的个数,则返回的结果集里会出现一个元素出现多次的情况
+            仅提供key参数时,该命令作用类似于SPOP命令, 不同的是SPOP命令会将被选择的随机元素从集合中移除, 
+            而SRANDMEMBER仅仅是返回该随记元素,而不做任何操作.
+        * sdelete(key, member1, member2):
+            在key集合中移除指定的元素
+            如果指定的元素不是key集合中的元素则忽略
+            如果key集合不存在则被视为一个空的集合，该命令返回0.
+            如果key的类型不是一个集合,则返回错误.
+    Unimplement:
+        sdiffstore | sinterstore | smove | sunionstore | sscan
 
-	'''
+    '''
 
     def sset(self, redis_key, *redis_members):
         return self.redis_client.sadd(redis_key, redis_members)
@@ -328,7 +337,7 @@ class RedisClient(object):
         return self.redis_client.zadd(redis_key, *paras)
 
     '''
-	Hashes(可以理解成map或者字典)操作:
+    Hashes(可以理解成map或者字典)操作:
         hset(key, map_key1, value1, map_key2 = value2, map_key3, value3):
             设置key指定的哈希集中指定字段map_key的值value
             如果key指定的哈希集不存在，会创建一个新的哈希集并与 key 关联
@@ -360,7 +369,7 @@ class RedisClient(object):
     Unimplement:
         hmget | hsetnx
 
-	'''
+    '''
 
     def hset(self, redis_key, *args, **kwargs):
         '''
