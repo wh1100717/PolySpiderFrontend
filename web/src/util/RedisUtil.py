@@ -56,8 +56,11 @@ class RedisClient(object):
             set (集合)
             zset (有序集)
             hash (哈希表)
+        * keys(pattern)
+            返回符合pattern的keys
+
    Unimplement:
-        dump | restore | expire | expireat | keys | migrate | move | object | persist |
+        dump | restore | expire | expireat | migrate | move | object | persist |
         pexpire | pexpireat | pttl | randomkey | renamenx | ttl | sort | scan
     '''
 
@@ -92,6 +95,9 @@ class RedisClient(object):
 
     def type(self, redis_key):
         return self.redis_client.type(redis_key)
+
+    def keys(self, pattern = '*'):
+        return self.redis_client.keys(pattern)
 
     '''
     Key-value操作:
@@ -202,7 +208,6 @@ class RedisClient(object):
 
     def get_items_with_index_list(self, redis_key, redis_index_list):
         pipe = self.redis_client.pipeline()
-        items = []
         for redis_index in redis_index_list:
             pipe.lindex(redis_key, redis_index)
         return pipe.execute()
@@ -279,7 +284,7 @@ class RedisClient(object):
     '''
 
     def sset(self, redis_key, *redis_members):
-        return self.redis_client.sadd(redis_key, redis_members)
+        return self.redis_client.sadd(redis_key, *redis_members)
 
     def sdiff(self, redis_key, *args):
         return self.redis_client.sdiff(redis_key, *args)

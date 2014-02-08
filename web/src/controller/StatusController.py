@@ -5,11 +5,19 @@ import json
 from src.dao import StatusDao
 
 urls = (
-    '/get_status_list','get_status_list',    
-    '/get_status_list_by_platform','get_status_list_by_platform',
-    '/get_current_status_by_platform','get_current_status_by_platform',
-    '/get_current_status','get_current_status',
+	'/get_today_status', 'GetTodayStatus',
+	'/get_today_status_by_platform', 'GetTodayStatusByPlatform',
 )
 
+class GetTodayStatus:
+	def GET(self):
+		status_json = json.dumps(StatusDao.get_today_status())
+		print status_json
+		return status_json
+
+class GetTodayStatusByPlatform:
+	def GET(self):
+		platform = web.ctx.query.get('platform')
+		return json.dumps(StatusDao.get_today_status_by_platform(platform))
 
 app_status = web.application(urls, locals())

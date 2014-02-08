@@ -28,10 +28,10 @@ class GetAppByAppId:
 
 class CategoryStatistic:
 	def GET(self):
-		return json.dumps(AppDao.category_statistic)
+		return json.dumps(AppDao.category_statistic())
 
 class PlatformStatistic:
 	def GET(self):
-		return json.dumps(AppDao.platform_statistic)
+		return json.dumps(AppDao.platform_statistic())
 
 app_app = web.application(urls, locals())

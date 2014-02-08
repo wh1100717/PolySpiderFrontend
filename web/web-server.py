@@ -3,10 +3,6 @@
 
 import web
 
-from src.dao import AppDao
-from src.dao import StatusDao
-from src.util import StringUtil
-from src.util import CategoryUtil
 from src.controller import AppController
 from src.controller import StatusController
 
@@ -21,7 +17,6 @@ urls = (
     '/log/', 'get_log',
     '/api/app', AppController.app_app,
     '/api/status', StatusController.app_status,
-
 )
 
 class home:
@@ -35,6 +30,10 @@ class status:
 class chart:
     def GET(self):
         return render.chart()
+
+
+
+
 
 class data:
     def GET(self):

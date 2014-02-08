@@ -162,8 +162,10 @@
                             setInterval(function() {
                                 var x = (new Date()).getTime(); // current time
                                 var y = Math.random();
-                                $$.getJSON('/status/get_current_status/', function(data) {
-                                    console.log("Data Loaded: " + data);
+                                $$.getJSON('/api/status/get_today_status', function(data) {
+                                    for (var d in data){
+                                        console.log("Data Loaded: " + d);
+                                    }
                                     $$.each(data, function(i, item) {
                                         if (item[1] == "xiaomi") {
                                             series[0].addPoint([x, item[3]], true, true);

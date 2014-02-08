@@ -18,7 +18,7 @@
     $$(function() {
         $$(document).ready(function() {
             //分类数据饼状图Ajax初始化
-            $$.getJSON('/app/get_category_chart/', function(data) {
+            $$.getJSON('/api/app/category_statistic', function(data) {
 
                 $$('#container-category').highcharts({
                     chart: {
@@ -56,7 +56,7 @@
                 });
             });
             //平台数据饼状图Ajax初始化
-            $$.getJSON('/app/get_platform_chart/', function(data) {
+            $$.getJSON('/api/app/platform_statistic/', function(data) {
                 $$('#container-platform').highcharts({
                     chart: {
                         plotBackgroundColor: null,
