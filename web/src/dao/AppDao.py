@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from src.util import RedisUtil
-
+from src.util import StringUtil
+from src.util import CategoryUtil
 redis_client = RedisUtil.RedisClient()
 
 '''
@@ -35,3 +36,35 @@ def get_app_by_app_name(app_name):
     app_id = redis_client.hget('app::index', app_name.encode('utf-8'))
     return get_app_by_app_id(app_id)
 
+def category_statistic():
+    '''
+    ##获取每个分类下应用数量
+    '''
+    categorys={}
+    for i in range(10,38):
+        category=redis_client.hget('app:category',str(i)+'00')
+        category=eval(category)
+        categorys.add(str(i)+'00',len(category))
+    categorys=StringUtil.item_to_json(categorys)
+    return category
+
+def get_app_list():
+    '''
+    ##获取app_list
+    '''
+    app_lists=[]
+    for i in range(redis_client.get_length('app::data')):
+        app_list=[]
+        app=eval(redis_client.get_item('app::data',i+1))
+        app_list.append(app['app_id'])
+        app_list.append(app['app_name'])
+        app_list.append(app['author'])
+        app_list.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
+        app_lists.append(app_list)
+    return app_lists
+    
+def get_app_count():
+    '''
+    ##获取应用总数
+    '''
+    return redis_client.get_length('app::data')
