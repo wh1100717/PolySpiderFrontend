@@ -9,7 +9,7 @@ $def with (content)
         <title>Poly Spider Terminal</title>
         <!-- Bootstrap core CSS -->
         <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../static/jquery-2.1.0.min.js"></script>
         <!-- Just for debugging purposes. Don't actually copy this line! -->
         <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -35,12 +35,16 @@ $def with (content)
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li id ='naviHome'><a href="/home/">Home</a></li>
-                        <li id ='naviStatus'><a href="/status/">Status</a></li>
-                        <li id ='naviChart'><a href="/chart/">Chart</a></li>
-                        <li id ='naviData'><a href="/data/">Data</a></li>
-                        <li id ='naviLog'><a href="/log/">Log</a></li>
+                        <li id ='navi_home'><a href="/home/">Home</a></li>
+                        <li id ='navi_status'><a href="/status/">Status</a></li>
+                        <li id ='navi_chart'><a href="/chart/">Chart</a></li>
+                        <li id ='navi_data'><a href="/data/">Data</a></li>
+                        <li id ='navi_log'><a href="/log/">Log</a></li>
                     </ul>
+                    <div class="text-right" style= "font-size:22px;margin-top:10px;">
+                        <a id="crawled_number"> 0 </a>
+                        <span>APPS Crawled</span>
+                    </div>
                 </div><!--/.nav-collapse -->
             </div>
         </div>
@@ -58,24 +62,7 @@ $def with (content)
         </footer>
         <script src="../static/bootstrap/js/bootstrap.min.js"></script>
         <script src="../static/js/json2.js"></script>
-        <script type="text/javascript">
-            $$(document).ready(function() {
-                naviCheck();
-            });
-            function naviCheck() {
-                var url = location.href;
-                if (url.indexOf("/status") >= 0) {
-                    $$("#naviStatus").addClass("active");
-                } else if (url.indexOf("/chart") >= 0) {
-                    $$("#naviChart").addClass("active");
-                } else if (url.indexOf("/data") >= 0) {
-                    $$("#naviData").addClass("active");
-                } else if (url.indexOf("/log") >= 0) {
-                    $$("#naviLog").addClass("active");
-                } else {
-                    $$("#naviHome").addClass("active");
-                }
-            }
-        </script>
+        <script src="../static/js/common.js"></script>
+
     </body>
 </html>
