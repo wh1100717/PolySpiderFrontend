@@ -9,11 +9,10 @@ from src.dao import AppDao
 urls = (
 	'/get_app_by_app_name', 'GetAppByAppName',
 	'/get_app_by_app_id', 'GetAppByAppId',
+	'/get_app_count', 'GetAppCount',
 	'/category_statistic', 'CategoryStatistic',
 	'/platform_statistic', 'PlatformStatistic',
-
 )
-
 class GetAppByAppName:
 	def GET(self):
 		app_name = web.ctx.query.get('app_name')
@@ -25,6 +24,11 @@ class GetAppByAppId:
 		app_id = web.ctx.query.get('app_id')
 		app = AppDao.get_app_by_app_id(app_id)
 		return json.dumps(app)
+
+class GetAppCount:
+	def GET(self):
+		count = AppDao.get_app_count()
+		return json.dumps([{'count':count}])
 
 class CategoryStatistic:
 	def GET(self):

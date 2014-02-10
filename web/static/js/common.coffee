@@ -10,25 +10,53 @@ $ ->
 	active_class = location.href.split("/")[3]
 	active_class = "home" if not active_class
 	$("#navi_" + active_class).addClass("active")
-
+###
 $ ->
-	###
-	crawled number process
-	###
-	new_n = 100
 	crawled_number = $('#crawled_number')
 	old_n = parseInt crawled_number.html()
-	count = 1
-	$.changeNum = (o_n, n_n) -> 
-		crawled_number.html((n_n - o_n)*count/5 + o_n)
-		if count isnt 5
-			count += 1
+	count = 30
+	new_n = 0
+	$.changeNum = (o_n, n_n) ->
+		crawled_number.html(Math.round((n_n - o_n)*count/30) + o_n) if new_n isnt 0
+		if count is 30
+			$.ajax(
+				url: "/api/app/get_app_count",
+				success: (data)->
+					data = eval(data)[0]
+					new_n = parseInt data['count']
+					old_n = parseInt crawled_number.html()
+					old_n = Math.round(0.5 * new_n) if old_n is 0
+					count = 1
+					return
+			)
 		else
-			new_n = new_n + 100
-			old_n = parseInt crawled_number.html()
-			count = 1
+			count += 1
 		return
-	setInterval((-> $.changeNum(old_n, new_n)), 100)
+	setInterval((-> $.changeNum(old_n, new_n)), 200)
 	return
-
+###
+$ ->
+	crawled_number = $('#crawled_number')
+	timer = null
+	$.changeNum = ->
+		$.ajax(
+			url: "/api/app/get_app_count",
+			success: (data) ->
+				data = eval(data)[0]
+				new_n = parseInt data['count']
+				old_n = parseInt crawled_number.html()
+				count = 1
+				timer = setInterval 
+					(-> 
+						crawled_number.html(old_n + count)
+						count += 1
+						return), 
+					(Math.round 6000 /(new_n-old_n))
+			)
+		return
+	setInterval((-> 
+		clearInterval timer
+		$.changeNum()
+		return), 6000)
+	return
 
