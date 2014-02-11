@@ -57,7 +57,11 @@ def get_app_list(page_index = 1,row_number = 100):
         app=eval(redis_client.get_item('app::data',i+1))
         app_list.append(app['app_id'])
         app_list.append(app['app_name'])
-        app_list.append(app['package_name'])
+        package_name=app['package_name']
+        if package_name:
+            app_list.append(app['package_name'])
+        else:
+            app_list.append(app['app_detail'][0]['pakage_name'])        
         app_list.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
         app_lists.append(app_list)
     return app_lists
