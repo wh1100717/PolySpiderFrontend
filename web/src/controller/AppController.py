@@ -10,6 +10,7 @@ urls = (
 	'/get_app_by_app_name', 'GetAppByAppName',
 	'/get_app_by_app_id', 'GetAppByAppId',
 	'/get_app_count', 'GetAppCount',
+	'/get_app_list','GetAppList',
 	'/category_statistic', 'CategoryStatistic',
 	'/platform_statistic', 'PlatformStatistic',
 )

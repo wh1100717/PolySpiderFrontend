@@ -1,6 +1,8 @@
-<link href="../static/datatables/media/css/demo_page.css" rel="stylesheet">
-<link href="../static/datatables/media/css/demo_table_jui.css" rel="stylesheet">
-<link href="../static/datatables/examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet">
+<link href="../static/datatables/media/css/jquery.dataTables.css" rel="stylesheet">
+<link href="../static/datatables/media/css/jquery.dataTables.css" rel="stylesheet">
+<script src="../static/datatables/media/js/jquery.dataTables.min.js"></script>
+
+
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
     <thead>
         <tr>
@@ -22,3 +24,11 @@
         </tr>
 	</tfoot>
 </table>
+<script type="text/javascript" charset="utf-8">
+	$$(document).ready(function() {
+		var oTable = $$('#example').dataTable( {
+			"bProcessing": true,
+			"sAjaxSource": "/api/app/get_app_list"
+		} );
+	} );
+</script>
