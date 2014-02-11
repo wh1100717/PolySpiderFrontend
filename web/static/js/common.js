@@ -53,7 +53,7 @@ $(function() {
     $.ajax({
       url: "/api/app/get_app_count",
       success: function(data) {
-        var count, new_n, old_n;
+        var count, new_n, old_n, time_interval;
         data = eval(data)[0];
         new_n = parseInt(data['count']);
         old_n = crawled_number.html();
@@ -64,10 +64,13 @@ $(function() {
           old_n = parseInt(old_n);
         }
         count = 1;
-        return timer = setInterval((function() {
-          crawled_number.html(old_n + count);
-          count += 1;
-        }), Math.round(6000 / (new_n - old_n)));
+        time_interval = new_n - old_n;
+        if (time_interval > 0) {
+          timer = setInterval((function() {
+            crawled_number.html(old_n + count);
+            count += 1;
+          }), Math.round(6000 / time_interval));
+        }
       }
     });
   };

@@ -51,13 +51,15 @@ $ ->
 				else
 					old_n = parseInt old_n
 				count = 1
-				timer = setInterval(
-					(-> 
-						#console.log "old_n:%d | count%d",old_n,count
-						crawled_number.html(old_n + count)
-						count += 1
-						return),
-					(Math.round 6000 /(new_n-old_n)))
+				time_interval = new_n - old_n
+				if time_interval > 0
+					timer = setInterval(
+						(-> 
+							crawled_number.html(old_n + count)
+							count += 1
+							return),
+						(Math.round 6000 /(time_interval)))
+				return
 			)
 		return
 	setInterval((-> 

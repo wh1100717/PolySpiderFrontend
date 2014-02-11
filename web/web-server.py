@@ -17,6 +17,7 @@ urls = (
     '/log/', 'get_log',
     '/api/app', AppController.app_app,
     '/api/status', StatusController.app_status,
+    '/test/', 'test',
 )
 
 class home:
@@ -30,6 +31,10 @@ class status:
 class chart:
     def GET(self):
         return render.chart()
+
+class test:
+    def GET(self):
+        return render_without_layout.test()
 
 
 
