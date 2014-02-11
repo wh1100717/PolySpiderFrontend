@@ -5,7 +5,6 @@ def item_to_json(item):
     '''
     对数据库中取到的数据进行json格式化处理
     '''
-    print item
     if isinstance(item, int):
         return str(item)
     elif isinstance(item, str):
@@ -17,5 +16,10 @@ def item_to_json(item):
         for i in item:
             result += item_to_json(i) + ","
         return result[:-1] + "]"
+    elif isinstance(item,dict):
+        result = '['
+        for i in item:
+            result += '['+item_to_json(i) + ','+str(item[i])+'],'
+        return result[:-1] + ']'
     else:
         return '"'+ str(item) + '"'

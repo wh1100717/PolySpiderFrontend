@@ -42,12 +42,14 @@ def category_statistic():
     '''
     categorys={}
     for i in range(10,38):
-        category=redis_client.hget('app:category',str(i)+'00')
-        category=eval(category)
-        categorys.add(str(i)+'00',len(category))
+        category_num=str(i)+'00'
+        category=redis_client.hget('app::category',category_num)
+        if category!=None:
+            category=eval(category)
+        categorys[str(i)+'00']=len(category)
     return categorys
 
-def get_app_list(page_index = 1,row_number = 100):
+def get_app_list(page_index = 1,row_number = 10000):
     '''
     ##获取app_list
     '''
@@ -57,8 +59,7 @@ def get_app_list(page_index = 1,row_number = 100):
         app=eval(redis_client.get_item('app::data',i+1))
         app_list.append(app['app_id'])
         app_list.append(app['app_name'])
-        package_name=app['package_name']
-        if package_name:
+        if app.has_key('package_name'):
             app_list.append(app['package_name'])
         else:
             app_list.append(app['app_detail'][0]['pakage_name'])        
@@ -71,3 +72,15 @@ def get_app_count():
     ##获取应用总数
     '''
     return redis_client.get_length('app::data')
+
+
+def platform_statistic():
+    platform=['baidu','xiaomi','googleplay','hiapk','muzhiwan','appchina']
+    platform_app_counts={}
+    for i in platform:
+        
+        platform_app_count=redis_client.hget('app::platform',i)
+        if platform_app_count!=None:
+            platform_app_count=eval(platform_app_count)
+            platform_app_counts[i]=len(platform_app_count)
+    return platform_app_counts
