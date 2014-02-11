@@ -56,11 +56,15 @@ $(function() {
         var count, new_n, old_n;
         data = eval(data)[0];
         new_n = parseInt(data['count']);
-        old_n = parseInt(crawled_number.html());
+        old_n = crawled_number.html();
+        if (old_n === "") {
+          $('#crawled_number_span').fadeIn();
+          old_n = Math.max(Math.round(new_n * 0.9), new_n - 300);
+        } else {
+          old_n = parseInt(old_n);
+        }
         count = 1;
-        console.log("old_n %d | count %d", old_n, count);
-        timer = setInterval((function() {
-          console.log("old_n %d | count %d", old_n, count);
+        return timer = setInterval((function() {
           crawled_number.html(old_n + count);
           count += 1;
         }), Math.round(6000 / (new_n - old_n)));
