@@ -1,3 +1,6 @@
+.navbar-static-top {
+    margin-bottom: 0
+}
 .container:after,.container:before {
     display:table;
     content:" "
@@ -5,21 +8,65 @@
 .container:after {
     clear:both
 }
-.polyboard {
-    background:url(../img/polyboarder_bg.png) center -20px repeat-x;
-    background-size:cover;
-    padding:120px 0 70px;
-    margin-top: -20px;
-}
 .polyboard h1{
-    color:#fff;
-    font-size:55px;
+    font-size:70px;
     text-shadow: 0 0 40px rgba(0,0,0,.8);
 }
 .polyboard p{
     color: #fff;
     font-size: 23px;
     line-height: 1.4;
+}
+.polyboard a {
+    color:#303336;
+    text-decoration:none;
+    border-bottom:1px solid #d5d6d6;
+}
+.polyboard a:hover {
+    color:#64686c;
+    text-decoration:none;
+    border-bottom:1px solid #d5d6d6;
+}
+.polyboard .top-navi{
+    width: 100%;
+    height: 45%;
+    background-image: url(../img/polyboarder_bg.png);
+    background-size:cover;
+}
+.polyboard .top-navi h1{
+    color:#fff;
+}
+.polyboard .bottom-navi{
+    height: 45%;
+    background-color: #f2f2f2;
+    background-repeat: no-repeat;
+    background-size: auto 120px;
+}
+.app-market { 
+    background:#fff;
+    border:2px solid #303336 !important; 
+    font-size:18px;
+    color:#303336; 
+    padding:1px 5px; 
+    display:inline-block; 
+    margin-top:38px;
+    font-weight:600;
+    border-radius: 5px 5px 5px 5px;
+}
+.app-market:hover {
+    background:#303336 !important;
+    border:2px solid #303336 !important;
+    color:#fff !important
+}
+.row {
+    margin-top: 30px;
+}
+.row:after,.row:before {
+    display:table;
+    content:" "
+}
+.row:after {
+    clear:both;
 }
 .section-title{
     width: 600px;
@@ -29,8 +76,8 @@
     display: block;
     height: 1px;
     position: inherit;
-    margin-top: 14px;
     z-index: 1;
+    padding-top: 40px;
 }
 section.what-we-do {
     text-align:center
@@ -118,17 +165,6 @@ section.featured-work .company a {
 }section.featured-work .company a:hover {
     opacity:.8
 }
-.row {
-    margin-right:-15px;
-    margin-left:-15px
-}
-.row:after,.row:before {
-    display:table;
-    content:" "
-}
-.row:after {
-    clear:both;
-}
 img {
     max-width: 100%;
     max-height: 100%;
@@ -155,16 +191,6 @@ a, a:visited {
     background:#303336 !important;
     border:2px solid #303336 !important;
     color:#fff !important
-}
-.polyboard a {
-    color:#303336;
-    text-decoration:none;
-    border-bottom:1px solid #d5d6d6;
-}
-.polyboard a:hover {
-    color:#64686c;
-    text-decoration:none;
-    border-bottom:1px solid #d5d6d6;
 }
 section.company-updates .col-md-6 {
     overflow:auto

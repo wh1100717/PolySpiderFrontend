@@ -1,40 +1,105 @@
 <link href="../static/onepage-scroll.css" rel="stylesheet">
 <div class="main">
     <section class="polyboard">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="intro animate fadeIn">
-                        <h1>Poly Spider <small>New Android Crawler</small></h1>
-                        <p class="lead">Poly Spider is mainly designed for Android app synchronizing and categorizing by focusing on grabing data from Android Markets.</p>
-                        <a href="https://github.com/wh1100717/PolySpider" target="_blank" class="demo-button">View Demo on Github</a>
-                        <!--<a class="btn btn-lg btn-primary" href="" role="button">Fork on GitHub »</a>-->
+        <div class = "top-navi">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="intro animate fadeIn">
+                            <h1>Poly Spider <small>New Android Crawler</small></h1>
+                            <p class="lead">Poly Spider is mainly designed for Android app synchronizing and categorizing by focusing on grabing data from Android Markets.</p>
+                            <p style = "margin-top: -30px;">
+                                Currently cover:
+                                <a href="https://play.google.com/store" target="_blank" class="app-market">Google Play</a> 
+                                <a href="http://www.appchina.com/" target="_blank" class="app-market">App China</a> 
+                                <a href="http://as.baidu.com/" target="_blank" class="app-market">Baidu App</a> 
+                                <a href="http://apk.hiapk.com/" target="_blank" class="app-market">Hiapk</a>
+                                <a href="http://app.xiaomi.com/" target="_blank" class="app-market">xiaomi</a>
+                                <a href="http://www.muzhiwan.com/" target="_blank" class="app-market">muzhiwan</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="padding-top: 30px; padding-left: 30px;">
+                            <a href="https://github.com/wh1100717/PolySpider" target="_blank" class="demo-button">Fork Github</a>
+                            <!--<a class="btn btn-lg btn-primary" href="" role="button">Fork on GitHub »</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-navi">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                            <h1 style="text-align:center;">Requirements</h1>
+                            <ul style="padding-top: 10px; font-size: initial;text-align:center;list-style-type:none">
+                                <li><a href="http://www.python.org/">Python</a> v2.7+</li>
+                                <li><a href="http://www.scrapy.org/">Scrapy</a> v0.20+</li>
+                                <li><a href="http://webpy.org">web.py</a> v0.37+</li>
+                                <li><a href="https://pypi.python.org/pypi/supervisor">Supervisor</a> v3.0+</li>
+                                <li><a href="https://github.com/andymccurdy/redis-py">Redis</a></li>
+                                <li>Dependencies listed in 
+                                    <a href="http://wh1100717.github.io/PolyTechDocs/python/scrapy/installation/">Installation</a>
+                                </li>
+                            </ul>
+                    </div>
+                    <div class="col-md-6">
+                            <h1 style="text-align:center;">Guides</h1>
+                            <ol style="padding-top: 10px; font-size: initial;text-align:center;list-style-type:none;">
+                                <li><a href="http://wh1100717.github.io/PolyTechDocs/docs/invovled/">Getting Involved</a></li>
+                                <li><a href="http://wh1100717.github.io/PolyTechDocs/python/scrapy/installation/">Installation</a></li>
+                                <li><a href="https://github.com/wh1100717/PolySpider/blob/develop/docs/TODO_LIST.md">TODO List</a></li>
+                                <li><a href="https://github.com/wh1100717/PolySpider/blob/develop/docs/pipelineinfo.md">Core Functionalities</a></li>
+                                <li><a href="https://github.com/wh1100717/PolySpider/blob/develop/docs/TIPS.md">Tips</a></li>
+                            </ol>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <section class="what-we-do">
-        <div class="container">
-            <div class="section-title">
-                <span>WHAT WE DO</span>
+        <div class="jobs">
+            <div class="container">
+                <div class="section-title">
+                    <span>WHAT WE DO</span>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Data Crawling</h2>
+                        <P>Selected Android Markets have been crawled for Android App data collecting. Scrapy spiders have been used to crawl the market to achieve useful information by parsing the content with xpath.</P>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Auto Categorizing</h2>
+                        <p>Intelligent categorizing method has benn applied for auto adjusting grabbed category information, which will be used for auto defining blacklist/whitelist policy of MAM based on category.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Data Analyzing</h2>
+                        <p>Charts&amp;&amp;Grids are implied to show the processed data information statistically. APIs are released out step by step to provide the guys who are interested in the data we have.</p>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <h2>Data Crawling</h2>
-                    <P>Selected Android Markets have been crawled for Android App data collecting. Scrapy spiders have been used to crawl the market to achieve useful information by parsing the content with xpath.</P>
-                </div>
-                <div class="col-md-4">
-                    <h2>Auto Categorizing</h2>
-                    <p>Intelligent categorizing method has benn applied for auto adjusting grabbed category information, which will be used for auto defining blacklist/whitelist policy of MAM based on category.</p>
-                </div>
-                <div class="col-md-4">
-                    <h2>Data Analyzing</h2>
-                    <p>Charts&amp;&amp;Grids would be used for showing the processed data information statistically in the future. APIs would aslo be released out to the guys who are interested in the data we have.</p>
-                </div>
-            </div>
-            <a href="https://github.com/wh1100717/PolySpider/blob/master/TODO_LIST.md">See our process <i class="icon-angle-right"></i></a>
         </div>
+        <div class="projects">
+            <div class="container">
+                <div class="section-title">
+                    <span>WHAT PROJECTS WE HAVE</span>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>PolySpider</h2>
+                        <P>Poly Spider is mainly designed for Android app synchronizing and categorizing by focusing on grabing data from Android Markets. We have done lots of work to make spider automatically and stable, like taking BAN strategy, using Redis as the data&cache store, monitoring spiders by Supervisor and etc.</P>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>PolySpiderFrontend</h2>
+                        <p>We have separated PolySpider Front-end module from PolySpider project as a standalone one in version 0.3. It focus on data management and analysis in redis server and providing API service in public. Web.py framework are used in this project just cuz it is so simple and easy to use. We may refactory this project by replacing Web.py with Django in the future. PolySpiderFrontend also integrates some interesting services like redis-live, log2web, tor and etc.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>PolyTechDocs</h2>
+                        <p>PolyTechDocs is a web documents project including all kinds of documents. Jeklly templates are used in this project and it support Markdown, Textile, Liquid, HTML&&CSS. Anyone could pull a request to make contribution.</p>
+                    </div>
+                </div>
+                <a href="https://github.com/wh1100717/PolySpider/blob/master/TODO_LIST.md">See our process <i class="icon-angle-right"></i></a>
+            </div>
+        </div>        
     </section>
 
     <section class="featured-work">
