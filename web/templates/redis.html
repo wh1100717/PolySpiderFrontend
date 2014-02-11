@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="http://highlightjs.org/styles/default.css">
+<script src="http://highlightjs.org/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<pre><code class="html">
+Poly Redis数据结构
+app::index:
+	存储格式为key-map_key-value
+		key --> app::index
+		map_key --> app_name
+		value --> app_id
+        举例：
+            'app::index','QQ',1
+app::data:
+	存储格式为key-index-value
+		key --> app::data
+		map_key --> app_id 
+		value --> 'app_id':id,'app_name':name,'author':author,'category':category,'app_detail':detail
+        举例：
+        'app::data',
+        1,
+        'app_id':0,
+        'app_name':'QQ',
+        'author':'Tencent',
+        'category':'3100',
+        'app_detail':[
+                        {'platform':'xiaomi','cover':'*****'},
+                        {'platform':'googleplay','cover','******'}
+                     ]
+app::category:
+        存储格式为key-map_key-value
+                key --> app::categroy
+                map_key --> category
+                value --> set([app_id,app_id,app_id...])
+        举例：
+            'app::category','3600',set([1,4,23,456,314])
+status::data&platform:
+        存储格式为key-map_key-value
+                key --> status::data&platform
+                map_key -->crawled/new/update
+                value -->count
+        举例：
+            'status::2014-02-11&hiapk',
+            'crawled':'4845',
+            'new':'151',
+            'update':'10' 
+</code></pre>

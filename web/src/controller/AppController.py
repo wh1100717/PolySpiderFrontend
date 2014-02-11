@@ -38,4 +38,8 @@ class PlatformStatistic:
 	def GET(self):
 		return json.dumps(AppDao.platform_statistic())
 
+
+class GetAppList:
+	def GET(self):
+		return json.dumps(AppDao.get_app_list())
 app_app = web.application(urls, locals())

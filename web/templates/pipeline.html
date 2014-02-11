@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="http://highlightjs.org/styles/default.css">
+<script src="http://highlightjs.org/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<pre><code class="html">
+Pipeline流程
+1、CategorizingPipeline （分类初始化）
+	判断传入的item是否为空如果为空抛弃该item
+	通过CategoryUtil.get_category_id_by_name初始化category
+		通过传入的category_name，在CATEGORY_ID中查找，如果没有该分类，先在un_record_category.txt获取其中的内容进行对比，如果已经有这个缺省分类记录，则不作处理，否则在un_record_category.txt中添加该分类名称，便于下次在CATEGORY_ID添加该分类，然后通过CATEGORY_ID.get(category_name)返回分类值
+	初始化
+		item['DROP_APP'] = False  是否抛弃item
+		item['NEW_APP'] = False  是否为新App
+		item['UPDATE_APP'] = False  是否需要更新App
+
+2、CheckAppPipeline （检查app相关内容）
+	根据item['app_name']通过AppDao.get_app_by_app_name(app_name)方法查找app
+		如果app为空，生成item['category']，并通过AppDao.insert_app()向redis中添加数据，并对item['NEW_APP']赋值为True
+		如果app不为空，item['UPDATE_APP']赋值为True
+	判断如果从redis中获取到的author为空，而抓取到的item['author']不为空，则执行AppDao.update_app_author()更新app_author
+
+3、CheckAppDetailsPipeline（检查app详细内容）
+	通过AppDao.get_app_detail_by_app_name()方法获取app的详细信息
+		如果没有app详细信息，先执行apk_operation()方法,通过item['apk_url']对app下载，分析，获取item['pakage_name']，并且上传到云终端，然后AppDao.insert_app_detail()方法添加app的详细信息
+		如果有app的详细信息，item['DROP_APP']赋值为True
+
+4、UpdateCategoryPipeline（更新ps_app中的category项）
+	如果item['DROP_APP']为True，丢弃该item
+	如果item['UPDATE_APP']为True，对category进行重新计算
+	通过category_reorder对该应用分类排序，按照命中分类次数由高到低排序
+	通过AppDao.update_app_category()更新分类
+
+5、StatusRecordPipeline（更新ps_status记录）
+	通过StatusDao.status_incr()对crawled加1
+	如果item['NEW_APP']为True对记录中的new加1
+	如果item['UPDATE_APP']为True对记录中的update加1
+</code></pre>

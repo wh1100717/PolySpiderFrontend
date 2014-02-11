@@ -45,20 +45,19 @@ def category_statistic():
         category=redis_client.hget('app:category',str(i)+'00')
         category=eval(category)
         categorys.add(str(i)+'00',len(category))
-    categorys=StringUtil.item_to_json(categorys)
-    return category
+    return categorys
 
-def get_app_list():
+def get_app_list(page_index = 1,row_number = 100):
     '''
     ##获取app_list
     '''
     app_lists=[]
-    for i in range(redis_client.get_length('app::data')):
+    for i in range((page_index-1)*row_number,page_index*row_number):
         app_list=[]
         app=eval(redis_client.get_item('app::data',i+1))
         app_list.append(app['app_id'])
         app_list.append(app['app_name'])
-        app_list.append(app['author'])
+        app_list.append(app['package_name'])
         app_list.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
         app_lists.append(app_list)
     return app_lists
