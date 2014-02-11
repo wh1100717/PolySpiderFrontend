@@ -47,25 +47,28 @@ def category_statistic():
         categorys.add(str(i)+'00',len(category))
     return categorys
 
-def get_app_list(page_index = 1,row_number = 100):
+def get_app_list(page_index = 1,row_number = 20):
     '''
     ##获取app_list
     '''
-    app_lists=[]
-    for i in range((page_index-1)*row_number,page_index*row_number):
-        app_list=[]
-        app=eval(redis_client.get_item('app::data',i+1))
-        app_list.append(app['app_id'])
-        app_list.append(app['app_name'])
-        package_name=app['package_name']
-        if package_name:
-            app_list.append(app['package_name'])
+    result = []
+    app_list = redis_client.get_items('app::data', (page_index-1)*row_number+1, row_number)
+    for app in app_list:
+        app_item = []
+        app = eval(app)
+        app_item.append(app['app_name'])
+        if app.has_key('package_name'):
+            app_item.append(app['package_name'])
         else:
-            app_list.append(app['app_detail'][0]['pakage_name'])        
-        app_list.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
-        app_lists.append(app_list)
-    return app_lists
-    
+            app_item.append(app['app_detail'][0]['pakage_name'])        
+        app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
+        button = '''
+            <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
+        '''
+        app_item.append(button)
+        result.append(app_item)
+    return result
+
 def get_app_count():
     '''
     ##获取应用总数

@@ -42,5 +42,8 @@ class PlatformStatistic:
 
 class GetAppList:
 	def GET(self):
-		return json.dumps(AppDao.get_app_list())
+		app_list = AppDao.get_app_list()
+		return json.dumps({'aaData':AppDao.get_app_list()})
+		# return '{"sEcho":1,"iTotalRecords":67,"iTotalDisplayRecords":67,"aaData": [["QQ", "com.tencent.mobileqq", "\u901a\u8baf", "<a href=\'baidu.com\'>1</a>"]]}'
+
 app_app = web.application(urls, locals())
