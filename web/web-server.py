@@ -34,7 +34,7 @@ class chart:
 
 class test:
     def GET(self):
-        return render_without_layout.test()
+        return render.test()
 
 
 
