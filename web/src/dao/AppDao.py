@@ -62,7 +62,7 @@ def get_app_list(page_index = 1,row_number = 20):
         if app.has_key('package_name'):
             app_item.append(app['package_name'])
         else:
-            app_item.append(app['app_detail'][0]['pakage_name'])        
+            app_item.append(app['app_detail'][0]['package_name'])        
         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
         button = '''
             <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
