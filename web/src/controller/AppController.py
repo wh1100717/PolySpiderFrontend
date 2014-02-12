@@ -47,7 +47,7 @@ class PlatformStatistic:
                 platform_list={
                     "muzhiwan":"拇指玩",
                     "googleplay":"Google市场",
-                    "baidu":"百度应用市场",
+                    "baiduapp":"百度应用市场",
                     "xiaomi":"小米应用市场",
                     "appchina":"应用汇",
                     "hiapk":"安卓市场"
