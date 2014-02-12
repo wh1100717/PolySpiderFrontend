@@ -42,6 +42,9 @@
     background-repeat: no-repeat;
     background-size: auto 120px;
 }
+.polyboard .bottom-navi .row{
+    margin-top: 0px;
+}
 .app-market { 
     background:#fff;
     border:2px solid #303336 !important; 
@@ -77,7 +80,7 @@
     height: 1px;
     position: inherit;
     z-index: 1;
-    padding-top: 40px;
+    padding-top: 20px;
 }
 section.what-we-do {
     text-align:center
@@ -86,12 +89,14 @@ section.what-we-do h2 {
     margin-top:50px
 }
 section.what-we-do p {
-    margin-top:20px
+    margin-top:30px
 }
 section.what-we-do a {
-    margin-top:30px;
     font-size:26px;
     display:inline-block
+}
+section.what-we-do .row{
+    margin-top: 0px;
 }
 .section-title {
     width:260px;
