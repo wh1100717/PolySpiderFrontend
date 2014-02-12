@@ -46,7 +46,7 @@ def category_statistic():
         category=redis_client.hget('app::category',category_num)
         if category!=None:
             category=eval(category)
-        categorys[str(i)+'00']=len(category)
+            categorys[str(i)+'00']=len(category)
     return categorys
 
 def get_app_list(page_index = 1,row_number = 20):
@@ -59,10 +59,7 @@ def get_app_list(page_index = 1,row_number = 20):
         app_item = []
         app = eval(app)
         app_item.append(app['app_name'])
-        if app.has_key('package_name'):
-            app_item.append(app['package_name'])
-        else:
-            app_item.append(app['app_detail'][0]['package_name'])        
+        app_item.append(app['package_name'])
         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
         button = '''
             <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
@@ -79,12 +76,16 @@ def get_app_count():
 
 
 def platform_statistic():
-    platform=['baidu','xiaomi','googleplay','hiapk','muzhiwan','appchina']
+    platform=['baiduapp','xiaomi','googleplay','hiapk','muzhiwan','appchina']
     platform_app_counts={}
     for i in platform:
-        
+        print i
         platform_app_count=redis_client.hget('app::platform',i)
         if platform_app_count!=None:
             platform_app_count=eval(platform_app_count)
-            platform_app_counts[i]=len(platform_app_count)
+            if platform_app_count==0:
+                platform_app_counts[i]=0
+            else:
+                platform_app_counts[i]=len(platform_app_count)
+    print platform_app_counts
     return platform_app_counts

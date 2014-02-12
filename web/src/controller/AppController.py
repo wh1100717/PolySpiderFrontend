@@ -53,9 +53,10 @@ class PlatformStatistic:
                     "hiapk":"安卓市场"
                 }
                 result = '['
-                for i in categorys:
+                for i in platform_App_counts:
                     result += '["'+unicode(str(platform_list[i])) + '",'+str(platform_App_counts[i])+'],'
                 result=result[:-1] + ']'
+                print result
 		return result
 
 
