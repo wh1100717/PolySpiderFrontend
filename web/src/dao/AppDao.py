@@ -72,7 +72,7 @@ def get_app_count():
     '''
     ##获取应用总数
     '''
-    return redis_client.get_length('app::data')
+    return redis_client.get('app::amount')
 
 
 def platform_statistic():
