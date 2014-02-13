@@ -1,5 +1,43 @@
+$def with (platform)
+$if platform == 'appchina':
+    1
+$elif platform == 'baiduapp':
+    2
 <div class="data-container">
-    <h1>AppChina Log</h1>
+  <ul class="nav nav-pills">
+    $if platform == 'appchina':
+        <li  class="active">
+    $else:
+        <li>
+    <a href="/log/appchina">appchina</a></li>
+    $if platform == 'baiduapp':
+        <li  class="active">
+    $else:
+        <li>
+    <a href="/log/baiduapp">baiduapp</a></li>
+    $if platform == 'muzhiwan':
+        <li  class="active">
+    $else:
+        <li>
+    <a href="/log/muzhiwan">muzhiwan</a></li>
+    $if platform == 'xiaomi':
+        <li  class="active">
+    $else:
+        <li>
+    <a href="/log/xiaomi">xiaomi</a></li>
+    $if platform == 'hiapk':
+        <li  class="active">
+    $else:
+        <li>
+    <a href="/log/hiapk">hiapk</a></li>
+    $if platform == 'googleplay':
+        <li  class="active">
+    $else:
+        <li>
+    <a href="/log/googleplay">googleplay</a></li>
+  
+  </ul>
+    <h1></h1>
     <noscript>You must enable JavaScript</noscript>
     <pre id="log" style="height: 40em; overflow-y: scroll; color: chartreuse; background-color: black;"></pre>
     <script type="text/javascript">
@@ -10,16 +48,29 @@
 
             var wsuri;
             ellog = document.getElementById('log');
+            var port;
+            $if platform == 'appchina':
+                    port = ":9003"
+            $elif platform == 'baiduapp':
+                    port = ":9004"
+            $elif platform == 'muzhiwan':
+                    port = ':9005'
+            $elif platform == 'xiaomi':
+                    port = ':9006'
+            $elif platform == 'hiapk':
+                    port = ':9007'
+            $elif platform == 'googleplay':
+                    port = ':9008'
 
             if (window.location.protocol === "file:") {
                 //如果是直接引用日志文件需要修改这里
                 //需要在这里修改具体的IP和端口
                 //比如服务器是192.168.1.203，用server.py建立的服务器端口未9003
                 //则对应的地址为"ws://192.168.1.203:9003"
-                wsuri = "ws://localhost:9003";
+                wsuri = "ws://localhost" + port;
             } else {
                 //如果该页面是从浏览器通过输入地址打开的，则需要修改这里，修放方式同上
-                wsuri = "ws://" + window.location.hostname + ":9003";
+                wsuri = "ws://" + window.location.hostname + port;
             }
 
             if ("WebSocket" in window) {

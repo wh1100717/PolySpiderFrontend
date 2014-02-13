@@ -14,7 +14,7 @@ urls = (
     '/status/?', 'status',
     '/chart/?', 'chart',
     '/data/?', 'data',
-    '/log/', 'get_log',
+    '/log/(.*)', 'get_log',
     '/api/app', AppController.app_app,
     '/api/status', StatusController.app_status,
     '/test/', 'test',
@@ -102,7 +102,7 @@ class get_status_list_by_platform:
         return data
 
 class get_current_status_by_platform:
-    def GET(self,platform):
+    def GET(self,platform='appchina'):
         data = StringUtil.item_to_json(Status.get_current_status_by_platform(platform))
         return data
 
@@ -112,8 +112,12 @@ class get_current_status:
         return data
 
 class get_log:
-    def GET(self):
-        return render.log()
+    def GET(self,platform):
+        print "__________"
+        print platform
+#        return render.log()
+        data=[platform]
+        return render.log(platform)
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
