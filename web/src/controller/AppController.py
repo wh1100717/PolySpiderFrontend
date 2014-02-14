@@ -68,12 +68,28 @@ class PlatformStatistic:
 
 class AppList:
 	def GET(self,page_index):
-		page_index = int(page_index)
-		if page_index == 1:
-			app_list = AppDao.app_list(row_number=1000)
-		else:
-			app_list = AppDao.app_list(page_index=page_index, row_number=5000)
-		return json.dumps({'aaData':app_list})
+                paras = StringUtil.convert_query_to_paras(web.ctx.query)
+                data = paras['data'].split(':')
+                if data[0]=='category':
+                    page_index = int(page_index)
+                    if page_index == 1:
+                            app_list = AppDao.get_app_list_by_categroy(data[1], row_number=1000)
+                    else:
+                            app_list = AppDao.get_app_list_by_categroy(data[1], page_index=page_index, row_number=5000)
+                else:
+                    page_index = int(page_index)
+                    if data[1] == 'total':
+                        if page_index == 1:
+                                app_list = AppDao.app_list(row_number=1000)
+                        else:
+                                app_list = AppDao.app_list(page_index=page_index, row_number=5000)
+                    else:
+                        if page_index == 1:
+                                app_list = AppDao.get_app_list_by_platform(data[1], row_number=1000)
+                        else:
+                                app_list = AppDao.get_app_list_by_platform(data[1], page_index=page_index, row_number=5000)
+                                
+                return json.dumps({'aaData':app_list})
 
 class GetAppList:
 	def GET(self):

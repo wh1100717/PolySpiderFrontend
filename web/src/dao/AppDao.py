@@ -63,7 +63,10 @@ def app_list(page_index = 1,row_number = 20):
         app_item.append(app['app_name'])
         app_item.append(app['package_name'])
         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
-        app_item.append(app['app_id'])
+        button = '''
+            <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
+        '''
+        app_item.append(button)
         result.append(app_item)
     return result
 
@@ -118,8 +121,10 @@ def get_app_list_by_categroy(category,page_index = 1,row_number = 200):
     
     app_list=redis_client.get_items_with_index_list('app::data',apps[(page_index-1)*row_number:page_index*row_number])
     for app in app_list:
+        if app == "0":continue
         app_item = []
         app = eval(app)
+        app_item.append(app['app_id'])
         app_item.append(app['app_name'])
         app_item.append(app['package_name'])
         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
@@ -140,8 +145,10 @@ def get_app_list_by_platform(platform,page_index = 1,row_number = 20):
     
     app_list=redis_client.get_items_with_index_list('app::data',apps[(page_index-1)*row_number:page_index*row_number])
     for app in app_list:
+        if app == "0":continue
         app_item = []
         app = eval(app)
+        app_item.append(app['app_id'])
         app_item.append(app['app_name'])
         app_item.append(app['package_name'])
         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))

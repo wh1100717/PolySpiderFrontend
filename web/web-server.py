@@ -13,7 +13,7 @@ urls = (
     '/(home/?)?', 'home',
     '/status/?', 'status',
     '/chart/?', 'chart',
-    '/data/?', 'data',
+    '/data/(.*)', 'data',
     '/log/(.*)', 'get_log',
     '/api/app', AppController.app_app,
     '/api/status', StatusController.app_status,
@@ -36,13 +36,13 @@ class test:
     def GET(self):
         return render.test()
 
-
-
-
-
 class data:
-    def GET(self):
-        return render.data()
+    def GET(self, data):
+        return render.data(data)
+
+
+
+
 
 class get_category_chart:
     def GET(self):

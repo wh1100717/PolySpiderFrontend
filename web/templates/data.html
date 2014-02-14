@@ -1,3 +1,4 @@
+$def with (data)
 <link href="../static/datatables/media/css/jquery.dataTables.css" rel="stylesheet">
 <link href="../static/datatables/jquery-ui-1.8.4.custom.css" rel="stylesheet">
 
@@ -7,21 +8,244 @@
         padding: 4px 10px;
     }
 </style>
-<div class="container" style="padding-top: 30px;padding-bottom: 100px;">
-    <table cellpadding="0" cellspacing="0" border="0" class="display" id="app_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>PackageName</th>
-                <th>Category</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
 
-        </tbody>
-    </table>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+              <ul class="nav nav-pills nav-stacked" style="max-width:100px;">
+                $if data == 'total':
+                        <li class="active">
+                $else:
+                        <li>
+                <a href="/data/platform:total">total</a></li>
+                $if data == 'appchina':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/platform:appchina">appchina</a></li>
+                $if data == 'baiduapp':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/platform:baiduapp">baiduapp</a></li>
+                $if data == 'muzhiwan':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/platform:muzhiwan">muzhiwan</a></li>
+                $if data == 'xiaomi':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/platform:xiaomi">xiaomi</a></li>
+                $if data == 'hiapk':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/platform:hiapk">hiapk</a></li>
+                $if data == 'googleplay':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/platform:googleplay">googleplay</a></li>
+              </ul>
+        </div>
+        <div class="col-md-8">
+            <table cellpadding="0" cellspacing="0" border="0" class="display" id="app_list">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>PackageName</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2" style="padding-left: 75px;">
+              <ul class="nav nav-pills nav-stacked" style="max-width:100px;">
+                $if data == '1000':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1000">个性化</a></li>
+                $if data == '1100':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1100">交通运输</a></li>
+                $if data == '1200':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1200">体育</a></li>
+                $if data == '1300':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1300">健康与健身</a></li>
+                $if data == '1400':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1400">动态壁纸</a></li>
+                $if data == '1500':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1500">动漫</a></li>
+                $if data == '1600':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1600">医药</a></li>
+                $if data == '1700':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1700">商务</a></li>
+                $if data == '1800':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1800">图书与工具书</a></li>
+                $if data == '1900':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:1900">天气</a></li>
+                $if data == '2000':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2000">娱乐</a></li>
+                $if data == '2100':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2100">媒体与视频</a></li>
+                $if data == '2200':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2200">小部件</a></li>
+                $if data == '2300':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2300">工具</a></li>
+                $if data == '2400':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2400">摄影</a></li>
+                $if data == '2500':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2500">效率</a></li>
+                $if data == '2600':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2600">教育</a></li>
+                $if data == '2700':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2700">新闻杂志</a></li>
+                $if data == '2800':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2800">旅游与本地出行</a></li>
+                $if data == '2900':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:2900">生活时尚</a></li>
+                $if data == '3000':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3000">社交</a></li>
+                $if data == '3100':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3100">财务</a></li>
+                $if data == '3200':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3200">购物</a></li>
+                $if data == '3300':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3300">软件与演示</a></li>
+                $if data == '3400':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3400">通讯</a></li>
+                $if data == '3500':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3500">音乐与音频</a></li>
+                $if data == '3600':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3600">游戏</a></li>
+                $if data == '3700':
+                    <li  class="active">
+                $else:
+                    <li>
+                <a href="/data/category:3700">其他</a></li>
+              </ul>
+        </div>
+    </div>
 </div>
 <script src="../static/datatables/media/js/jquery.dataTables.min.js"></script>
-<script src="../static/js/data.js"></script>
+       
+<script>
+// Generated by CoffeeScript 1.7.1
+$$(function() {
+  $$('#app_list').dataTable({
+    "bProcessing": true
+  });
+  $$.ajax({
+    "type": "get",
+    "contentType": "application/json",
+    "url": "/api/app/app_list/1?data=$:data",
+    "success": function(data) {
+      var i, load_job;
+      $$("#app_list").dataTable().fnAddData(eval("(" + data + ")")['aaData']);
+//      i = 2;
+//      return load_job = setInterval(function() {
+//          var url = "/api/app/app_list/" + i + "?data=$:data"
+//        $$.ajax({
+//          "type": "get",
+//          "contentType": "application/json",
+//          "url": url,
+//          "success": function(new_data) {
+//            $$("#app_list").dataTable().fnAddData(eval("(" + new_data + ")")['aaData']);
+//            i += 1;
+//            if (i > 100) {
+//              clearInterval(load_job);
+//            }
+//          }
+//        });
+//      }, 1000);
+    }
+  });
+});
+
+</script>
+  
