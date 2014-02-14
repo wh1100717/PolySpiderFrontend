@@ -12,6 +12,8 @@ urls = (
 	'/get_app_by_app_id', 'GetAppByAppId',
 	'/get_app_count', 'GetAppCount',
 	'/get_app_list','GetAppList',
+        '/get_app_list_by_platform/(.*)','GetAppListByPlatform',
+        '/get_app_list_by_category/(.*)','GetAppListByCategory',
 	'/category_statistic', 'CategoryStatistic',
 	'/platform_statistic', 'PlatformStatistic',
 )
@@ -37,7 +39,7 @@ class CategoryStatistic:
                 categorys=AppDao.category_statistic()
                 result = '['
                 for i in categorys:
-                    result += '["'+str(CategoryUtil.get_category_name_by_id(i)) + '",'+str(categorys[i])+'],'
+                    result += '["'+unicode(str(CategoryUtil.get_category_name_by_id(i))) + '",'+str(categorys[i])+'],'
                 result=result[:-1] + ']'
 		return result
 
@@ -54,7 +56,7 @@ class PlatformStatistic:
                 }
                 result = '['
                 for i in platform_App_counts:
-                    result += '["'+str(platform_list[i]) + '",'+str(platform_App_counts[i])+'],'
+                    result += '["'+unicode(str(platform_list[i])) + '",'+str(platform_App_counts[i])+'],'
                 result=result[:-1] + ']'
                 print result
 		return result
@@ -66,4 +68,13 @@ class GetAppList:
 		return json.dumps({'aaData':AppDao.get_app_list()})
 		# return '{"sEcho":1,"iTotalRecords":67,"iTotalDisplayRecords":67,"aaData": [["QQ", "com.tencent.mobileqq", "\u901a\u8baf", "<a href=\'baidu.com\'>1</a>"]]}'
 
+class GetAppListByPlatform:
+	def GET(self,platform):
+		app_list = AppDao.get_app_list_by_platform(platform)
+		return json.dumps({'aaData':AppDao.get_app_list_by_platform(platform)})
+            
+class GetAppListByCategory:
+	def GET(self,categroy):
+		app_list = AppDao.get_app_list_by_categroy(categroy)
+		return json.dumps({'aaData':AppDao.get_app_list_by_categroy(categroy)})
 app_app = web.application(urls, locals())
