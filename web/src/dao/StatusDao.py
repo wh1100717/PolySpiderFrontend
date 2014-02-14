@@ -30,6 +30,34 @@ status::history:
                 }
 '''
 
+
+def get_today_status_by_platform(platform):
+    today = str(datetime.date.today())
+    data = redis_client.hget_all('status::' + today + '&' + platform)
+    if not data:
+        yesterday = str(today - datetime.timedelta(days = 1))
+        if redis_client.exists('status::' + yesterday + '&' + platform):
+            move_status_into_history(yesterday, platform)
+        data = {'crawled': 0, 'new': 0, 'update': 0}
+        redis_client.hset_map('status::' + today + '&' + platform, data)
+    return data
+
+def status_history():
+    status_history = redis_client.hget_all('status::history')
+    return status_history
+
+def status_today():
+    status_today = {}
+    status_keys = redis_client.keys('status::*&*')
+    for key in status_keys:
+        platform = key[19:]
+        status_today[platform] = get_today_status_by_platform(platform)
+    return status_today
+
+def status_incr(platform, map_key):
+    today = str(datetime.date.today())
+    redis_client.hincr('status::' + today + '&' + platform, map_key)
+
 def move_status_into_history(date, platform):
     date = str(date)
     data = redis_client.hget_all('status::' + date + '&' + platform)
@@ -45,23 +73,14 @@ def move_status_into_history(date, platform):
         redis_client.hset('status::history', date, {platform:data})
     redis_client.delete('status::' + date + '&' + platform)
 
-def move_staus_patch():
-    today = str(datetime.date.today())
-    status_key_list = redis_client.keys('status::*&*')
-    for status_key in status_key_list:
-        if today in status_key: continue
-        date = status_key[8:18]
-        platform = status_key[19:]
-        move_status_into_history(date, platform)
 
+'''处理Redis数据的一些脚本，目前不用了
 def change_package_location():
-    '''
     app::data:
-    存储格式为key-index-value
-        key --> app::data
-        map_key --> app_id 
-        value --> 举例： 'app_id':0,'app_name':'QQ','author':'Tencent','category':'社交','app_detail':[{},{}]
-    '''
+    #存储格式为key-index-value
+    #    key --> app::data
+    #    map_key --> app_id 
+    #    value --> 举例： 'app_id':0,'app_name':'QQ','author':'Tencent','category':'社交','app_detail':[{},{}]
     index = 1
     while True:
         print "index: %d" %index
@@ -111,17 +130,12 @@ def generate_platform_data():
                 redis_client.hset('app::platform',platform,set([index]))
         index += 1
 
-def get_today_status_by_platform(platform):
+def move_staus_patch():
     today = str(datetime.date.today())
-    data = redis_client.hget_all('status::' + today + '&' + platform)
-    if not data:
-        yesterday = str(today - datetime.timedelta(days = 1))
-        if redis_client.exists('status::' + yesterday + '&' + platform):
-            move_status_into_history(yesterday, platform)
-        data = {'crawled': 0, 'new': 0, 'update': 0}
-        redis_client.hset_map('status::' + today + '&' + platform, data)
-    return data
-
-def status_incr(platform, map_key):
-    today = str(datetime.date.today())
-    redis_client.hincr('status::' + today + '&' + platform, map_key)
+    status_key_list = redis_client.keys('status::*&*')
+    for status_key in status_key_list:
+        if today in status_key: continue
+        date = status_key[8:18]
+        platform = status_key[19:]
+        move_status_into_history(date, platform)
+'''

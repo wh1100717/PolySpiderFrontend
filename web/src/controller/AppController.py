@@ -37,7 +37,7 @@ class CategoryStatistic:
                 categorys=AppDao.category_statistic()
                 result = '['
                 for i in categorys:
-                    result += '["'+unicode(str(CategoryUtil.get_category_name_by_id(i))) + '",'+str(categorys[i])+'],'
+                    result += '["'+str(CategoryUtil.get_category_name_by_id(i)) + '",'+str(categorys[i])+'],'
                 result=result[:-1] + ']'
 		return result
 
@@ -54,7 +54,7 @@ class PlatformStatistic:
                 }
                 result = '['
                 for i in platform_App_counts:
-                    result += '["'+unicode(str(platform_list[i])) + '",'+str(platform_App_counts[i])+'],'
+                    result += '["'+str(platform_list[i]) + '",'+str(platform_App_counts[i])+'],'
                 result=result[:-1] + ']'
                 print result
 		return result
