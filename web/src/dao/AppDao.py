@@ -49,15 +49,34 @@ def category_statistic():
             categorys[str(i)+'00']=len(category)
     return categorys
 
+def app_list(page_index = 1,row_number = 20):
+    '''
+    ##获取app_list
+    '''
+    result = []
+    app_list = redis_client.get_items('app::data', (page_index-1)*row_number+1, page_index * row_number + 1)
+    for app in app_list:
+        if app == "0":continue
+        app_item = []
+        app = eval(app)
+        app_item.append(app['app_id'])
+        app_item.append(app['app_name'])
+        app_item.append(app['package_name'])
+        app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
+        app_item.append(app['app_id'])
+        result.append(app_item)
+    return result
+
 def get_app_list(page_index = 1,row_number = 20):
     '''
     ##获取app_list
     '''
     result = []
-    app_list = redis_client.get_items('app::data', (page_index-1)*row_number+1, row_number)
+    app_list = redis_client.get_items('app::data', (page_index-1)*row_number+1, page_index * row_number + 1)
     for app in app_list:
         app_item = []
         app = eval(app)
+        app_item.append(app['app_id'])
         app_item.append(app['app_name'])
         app_item.append(app['package_name'])
         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))

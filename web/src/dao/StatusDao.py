@@ -74,6 +74,15 @@ def move_status_into_history(date, platform):
     redis_client.delete('status::' + date + '&' + platform)
 
 
+def move_status_patch():
+    today = str(datetime.date.today())
+    status_key_list = redis_client.keys('status::*&*')
+    for status_key in status_key_list:
+        if today in status_key: continue
+        date = status_key[8:18]
+        platform = status_key[19:]
+        move_status_into_history(date, platform)
+
 '''处理Redis数据的一些脚本，目前不用了
 def change_package_location():
     app::data:
@@ -130,12 +139,5 @@ def generate_platform_data():
                 redis_client.hset('app::platform',platform,set([index]))
         index += 1
 
-def move_staus_patch():
-    today = str(datetime.date.today())
-    status_key_list = redis_client.keys('status::*&*')
-    for status_key in status_key_list:
-        if today in status_key: continue
-        date = status_key[8:18]
-        platform = status_key[19:]
-        move_status_into_history(date, platform)
+
 '''

@@ -42,18 +42,7 @@ class test:
 
 class data:
     def GET(self):
-        apps = App.get_app_list()
-        for index in range(len(apps)):
-            data = list(apps[index])
-            data[3]=CategoryUtil.get_category_name_by_id(data[3][0:4])
-            apps[index]=tuple(data)
-        app_details=AppDetail.get_app_detail_list()
-        for index in range(len(app_details)):
-            data = list(app_details[index])
-            data[3]=CategoryUtil.get_category_name_by_id(data[3][0:4])
-            app_details[index]=tuple(data)
-        data=[apps,app_details]
-        return render.data(data)
+        return render.data()
 
 class get_category_chart:
     def GET(self):
