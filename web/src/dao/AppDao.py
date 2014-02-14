@@ -90,14 +90,15 @@ def platform_statistic():
     return platform_app_counts
 
 
-def get_app_list_by_categroy(category,page_index = 1,row_number = 20):
+def get_app_list_by_categroy(category,page_index = 1,row_number = 200):
     apps=redis_client.hget('app::category',category)
     apps=eval(apps)
     apps=list(apps)
     apps.sort()
-    app_lists=[]
-    for i in range((page_index-1)*row_number,page_index*row_number):
-        app=redis_client.get_item('app::data',apps[i])
+    result=[]
+    
+    app_list=redis_client.get_items_with_index_list('app::data',apps[(page_index-1)*row_number:page_index*row_number])
+    for app in app_list:
         app_item = []
         app = eval(app)
         app_item.append(app['app_name'])
@@ -107,8 +108,8 @@ def get_app_list_by_categroy(category,page_index = 1,row_number = 20):
             <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
         '''
         app_item.append(button)
-        app_lists.append(app_item)
-    return app_lists
+        result.append(app_item)
+    return result
 
 
 def get_app_list_by_platform(platform,page_index = 1,row_number = 20):
@@ -116,9 +117,10 @@ def get_app_list_by_platform(platform,page_index = 1,row_number = 20):
     apps=eval(apps)
     apps=list(apps)
     apps.sort()
-    app_lists=[]
-    for i in range((page_index-1)*row_number,page_index*row_number):
-        app=redis_client.get_item('app::data',apps[i])
+    result=[]
+    
+    app_list=redis_client.get_items_with_index_list('app::data',apps[(page_index-1)*row_number:page_index*row_number])
+    for app in app_list:
         app_item = []
         app = eval(app)
         app_item.append(app['app_name'])
@@ -128,5 +130,5 @@ def get_app_list_by_platform(platform,page_index = 1,row_number = 20):
             <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
         '''
         app_item.append(button)
-        app_lists.append(app_item)
-    return app_lists    
+        result.append(app_item)
+    return result    
