@@ -63,9 +63,11 @@ $def with (platform)
                 //需要在这里修改具体的IP和端口
                 //比如服务器是192.168.1.203，用server.py建立的服务器端口未9003
                 //则对应的地址为"ws://192.168.1.203:9003"
+                //wsuri = "ws://192.168.1.203" + port;
                 wsuri = "ws://localhost" + port;
             } else {
                 //如果该页面是从浏览器通过输入地址打开的，则需要修改这里，修放方式同上
+                //wsuri = "ws://192.168.1.203" + port;
                 wsuri = "ws://" + window.location.hostname + port;
             }
 
