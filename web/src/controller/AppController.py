@@ -19,6 +19,7 @@ urls = (
 	# '/get_app_list_by_category/(.*)','GetAppListByCategory',
 	'/category_statistic', 'CategoryStatistic',
 	'/platform_statistic', 'PlatformStatistic',
+        '/update_category/(.*)/(.*)', 'UpdateCategory',
 )
 class GetAppByAppName:
 	def GET(self):
@@ -100,7 +101,10 @@ class GetAppListByCategory:
 	def GET(self,categroy):
 		app_list = AppDao.get_app_list_by_categroy(categroy)
 		return json.dumps({'aaData':AppDao.get_app_list_by_categroy(categroy)})
-
+class UpdateCategory:
+	def GET(self,app_id,categroy_name):
+                AppDao.update_category(int(app_id),categroy_name)
+		return 'success'
 
 # class GetAppList:
 # 	def GET(self):

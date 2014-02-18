@@ -106,7 +106,7 @@
 
     $.ajax {
         "type":"get",
-        "url":"/api/app/update_category?appid=#{app_id}&category_name=#{category_name}",
+        "url":"/api/app/update_category/#{app_id}/#{category_name}",
         "success": (data) ->
             $(self).parent().parent().siblings("button").html("#{category_name}<span class='caret'></span>")
     }

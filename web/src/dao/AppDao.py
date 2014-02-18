@@ -157,6 +157,75 @@ def get_app_list_by_platform(platform,page_index = 1,row_number = 20):
         result.append(app_item)
     return result    
 
+'''
+    update_category传入app_id,updatecategory
+    将updatecategory转化为category_id
+
+'''
+def update_category(app_id,updatecategory):
+    updatecategory=CategoryUtil.get_category_id_by_name(updatecategory.encode('utf8', 'ignore'))
+    app=redis_client.get_item('app::data',app_id)
+    app=eval(app)
+    categories = app['category'].split(",")
+    flag = True
+    for index in range(len(categories)):
+        category = categories[index]  # 2200:1
+        app_category_id = category[:category.find(":")]  # 2200
+        if app_category_id == updatecategory:
+            categories[index] = app_category_id + ":9999" 
+            flag = False
+        elif categories[index][(category.find(":")+1):]=='9999':
+                categories[index]=category[:category.find(":")]+':1'
+    if flag:
+            categories.append(updatecategory + ":9999")
+    categories = ",".join(category_reorder(categories))
+    update_app_category(app_id,categories)
+    app['category']=categories
+    redis_client.set_item('app::data',app_id,app)
+    
+def category_reorder(categories):
+        print "---------------------"
+        print categories
+        print "---------------------"
+        length = len(categories)
+        for i in range(length - 1):
+            for j in range(length - i - 1):
+                order_category = categories[j]
+                order_category_value = int(order_category[(order_category.find(":") + 1):])
+                print "older_value", order_category_value
+                cmp_category = categories[j + 1]
+                cmp_category_value = int(cmp_category[(cmp_category.find(":") + 1):])
+                print "cmp_value", cmp_category_value
+                if cmp_category_value > order_category_value:
+                    categories[j], categories[j + 1] = categories[j + 1], categories[j]
+        print "---------------------"
+        print categories
+        print "---------------------"
+        return categories
+
+def update_app_category(app_id, category):
+    '''
+    ##更新app中的分类信息
+    *   input: id | category
+    '''
+    new_categorys=category.split(',')
+    for i in range(len(new_categorys)):
+        if i==0:
+            category_set= redis_client.hget('app::category',int(new_categorys[i].split(':')[0]))
+            if category_set:
+                category_set=eval(category_set)
+                category_set.add(app_id)
+                redis_client.hset('app::category',int(new_categorys[i].split(':')[0]),category_set)
+            else:
+                redis_client.hset('app::category',int(new_categorys[i].split(':')[0]),set([app_id]))
+        else:
+            category_set= redis_client.hget('app::category',int(new_categorys[i].split(':')[0]))
+            if category_set:
+                category_set=eval(category_set)
+                if app_id in category_set:
+                    category_set.remove(app_id)
+                    redis_client.hset('app::category',int(new_categorys[i].split(':')[0]),category_set)
+
 
 # def get_app_list(page_index = 1,row_number = 20):
 #     '''
