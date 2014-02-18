@@ -13,10 +13,10 @@ urls = (
 	'/get_app_by_app_id', 'GetAppByAppId',
 	'/get_app_count', 'GetAppCount',
 	'/app_list/(.*)','AppList',
-	'/get_app_list','GetAppList',
-	'/get_app_list_by_default', 'GetAppListByDefault',
-	'/get_app_list_by_platform/(.*)','GetAppListByPlatform',
-	'/get_app_list_by_category/(.*)','GetAppListByCategory',
+	# '/get_app_list','GetAppList',
+	# '/get_app_list_by_default', 'GetAppListByDefault',
+	# '/get_app_list_by_platform/(.*)','GetAppListByPlatform',
+	# '/get_app_list_by_category/(.*)','GetAppListByCategory',
 	'/category_statistic', 'CategoryStatistic',
 	'/platform_statistic', 'PlatformStatistic',
 )
@@ -73,7 +73,7 @@ class AppList:
                 if data[0]=='category':
                     page_index = int(page_index)
                     if page_index == 1:
-                            app_list = AppDao.get_app_list_by_categroy(data[1], row_number=1000)
+                            app_list = AppDao.get_app_list_by_categroy(data[1], row_number=500)
                     else:
                             app_list = AppDao.get_app_list_by_categroy(data[1], page_index=page_index, row_number=5000)
                 else:
@@ -85,40 +85,11 @@ class AppList:
                                 app_list = AppDao.app_list(page_index=page_index, row_number=5000)
                     else:
                         if page_index == 1:
-                                app_list = AppDao.get_app_list_by_platform(data[1], row_number=1000)
+                                app_list = AppDao.get_app_list_by_platform(data[1], row_number=500)
                         else:
                                 app_list = AppDao.get_app_list_by_platform(data[1], page_index=page_index, row_number=5000)
                                 
                 return json.dumps({'aaData':app_list})
-
-class GetAppList:
-	def GET(self):
-		paras = StringUtil.convert_query_to_paras(web.ctx.query)
-		aoData = paras['aoData']
-		aoData = StringUtil.aoData_map_convert(aoData)
-		print aoData
-		iColumns = aoData['iColumns'] #列数
-		iDisplayLength = aoData['iDisplayLength'] #展示的行数
-		iDisplayStart = aoData['iDisplayStart'] #起始页数
-		page_index = iDisplayStart / iDisplayLength + 1
-		print page_index
-		app_list = AppDao.get_app_list(page_index=page_index, row_number=iDisplayLength)
-		iTotalRecords = AppDao.get_app_count()
-		iTotalDisplayRecords = iTotalRecords
-
-		return json.dumps({
-			'aaData':app_list,
-			'iTotalRecords':iTotalRecords,
-			'iTotalDisplayRecords':iTotalDisplayRecords,
-			'sEcho':aoData['sEcho']})
-		# return '{"sEcho":1,"iTotalRecords":67,"iTotalDisplayRecords":67,"aaData": [["QQ", "com.tencent.mobileqq", "\u901a\u8baf", "<a href=\'baidu.com\'>1</a>"]]}'
-
-class GetAppListByDefault:
-	def GET(self):
-		app_list = AppDao.get_app_list(row_number = 5000)
-		iTotalRecords = AppDao.get_app_count()
-		iTotalDisplayRecords = iTotalRecords
-		return json.dumps({'aaData':app_list,})
 
 class GetAppListByPlatform:
 	def GET(self,platform):
@@ -129,5 +100,35 @@ class GetAppListByCategory:
 	def GET(self,categroy):
 		app_list = AppDao.get_app_list_by_categroy(categroy)
 		return json.dumps({'aaData':AppDao.get_app_list_by_categroy(categroy)})
+
+
+# class GetAppList:
+# 	def GET(self):
+# 		paras = StringUtil.convert_query_to_paras(web.ctx.query)
+# 		aoData = paras['aoData']
+# 		aoData = StringUtil.aoData_map_convert(aoData)
+# 		print aoData
+# 		iColumns = aoData['iColumns'] #列数
+# 		iDisplayLength = aoData['iDisplayLength'] #展示的行数
+# 		iDisplayStart = aoData['iDisplayStart'] #起始页数
+# 		page_index = iDisplayStart / iDisplayLength + 1
+# 		print page_index
+# 		app_list = AppDao.get_app_list(page_index=page_index, row_number=iDisplayLength)
+# 		iTotalRecords = AppDao.get_app_count()
+# 		iTotalDisplayRecords = iTotalRecords
+
+# 		return json.dumps({
+# 			'aaData':app_list,
+# 			'iTotalRecords':iTotalRecords,
+# 			'iTotalDisplayRecords':iTotalDisplayRecords,
+# 			'sEcho':aoData['sEcho']})
+# 		# return '{"sEcho":1,"iTotalRecords":67,"iTotalDisplayRecords":67,"aaData": [["QQ", "com.tencent.mobileqq", "\u901a\u8baf", "<a href=\'baidu.com\'>1</a>"]]}'
+
+# class GetAppListByDefault:
+# 	def GET(self):
+# 		app_list = AppDao.get_app_list(row_number = 5000)
+# 		iTotalRecords = AppDao.get_app_count()
+# 		iTotalDisplayRecords = iTotalRecords
+# 		return json.dumps({'aaData':app_list,})
 
 app_app = web.application(urls, locals())

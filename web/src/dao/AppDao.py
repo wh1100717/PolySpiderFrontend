@@ -19,10 +19,27 @@ app::data:
    
 '''
 
+def get_app_count():
+    '''
+    ##获取应用总数
+    '''
+    return redis_client.get('app::amount')
+
+
 def get_app_by_app_id(app_id):
+    '''
+    ##根据app_id来获取app record
+    *   input: app_id
+    *   output: app::data()
+    '''
     return eval(redis_client.get_item('app::data',app_id)) if app_id else None
 
 def get_app_detail_by_app_name(app_name):
+    '''
+    ##根据app_name来获取app_detail，详细信息
+    *   input: app_name
+    *   output: app::data['app_detail']
+    '''
     app_id = redis_client.hget('app::index', app_name.encode('utf-8'))
     return get_app_by_app_id(app_id)['app_detail']
 
@@ -38,7 +55,7 @@ def get_app_by_app_name(app_name):
 
 def category_statistic():
     '''
-    ##获取每个分类下应用数量
+    ##统计每个分类下应用数量
     '''
     categorys={}
     for i in range(10,38):
@@ -48,6 +65,25 @@ def category_statistic():
             category=eval(category)
             categorys[str(i)+'00']=len(category)
     return categorys
+
+def platform_statistic():
+    '''
+    ##统计平台应用数信息
+    '''
+    # TODO 需要将平台信息统一写到Config文件中，不直接操作
+    # Will be done in v0.5
+    platform=['baiduapp','xiaomi','googleplay','hiapk','muzhiwan','appchina']
+    platform_app_counts={}
+    for i in platform:
+        print i
+        platform_app_count=redis_client.hget('app::platform',i)
+        if platform_app_count!=None:
+            platform_app_count=eval(platform_app_count)
+            if platform_app_count==0:
+                platform_app_counts[i]=0
+            else:
+                platform_app_counts[i]=len(platform_app_count)
+    return platform_app_counts
 
 def app_list(page_index = 1,row_number = 20):
     '''
@@ -63,54 +99,10 @@ def app_list(page_index = 1,row_number = 20):
         app_item.append(app['app_name'])
         app_item.append(app['package_name'])
         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
-        button = '''
-            <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
-        '''
+        button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' + str(app['app_id']) + ''');">More</button>'''
         app_item.append(button)
         result.append(app_item)
     return result
-
-def get_app_list(page_index = 1,row_number = 20):
-    '''
-    ##获取app_list
-    '''
-    result = []
-    app_list = redis_client.get_items('app::data', (page_index-1)*row_number+1, page_index * row_number + 1)
-    for app in app_list:
-        app_item = []
-        app = eval(app)
-        app_item.append(app['app_id'])
-        app_item.append(app['app_name'])
-        app_item.append(app['package_name'])
-        app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
-        button = '''
-            <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
-        '''
-        app_item.append(button)
-        result.append(app_item)
-    return result
-
-def get_app_count():
-    '''
-    ##获取应用总数
-    '''
-    return redis_client.get('app::amount')
-
-
-def platform_statistic():
-    platform=['baiduapp','xiaomi','googleplay','hiapk','muzhiwan','appchina']
-    platform_app_counts={}
-    for i in platform:
-        print i
-        platform_app_count=redis_client.hget('app::platform',i)
-        if platform_app_count!=None:
-            platform_app_count=eval(platform_app_count)
-            if platform_app_count==0:
-                platform_app_counts[i]=0
-            else:
-                platform_app_counts[i]=len(platform_app_count)
-    return platform_app_counts
-
 
 def get_app_list_by_categroy(category,page_index = 1,row_number = 200):
     apps=redis_client.hget('app::category',category)
@@ -158,3 +150,24 @@ def get_app_list_by_platform(platform,page_index = 1,row_number = 20):
         app_item.append(button)
         result.append(app_item)
     return result    
+
+
+# def get_app_list(page_index = 1,row_number = 20):
+#     '''
+#     ##获取app_list
+#     '''
+#     result = []
+#     app_list = redis_client.get_items('app::data', (page_index-1)*row_number+1, page_index * row_number + 1)
+#     for app in app_list:
+#         app_item = []
+#         app = eval(app)
+#         app_item.append(app['app_id'])
+#         app_item.append(app['app_name'])
+#         app_item.append(app['package_name'])
+#         app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
+#         button = '''
+#             <a href='https://github.com/wh1100717/PolySpider' target='_blank' class='demo-button'>More</a>
+#         '''
+#         app_item.append(button)
+#         result.append(app_item)
+#     return result
