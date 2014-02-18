@@ -98,8 +98,14 @@ def app_list(page_index = 1,row_number = 20):
         app_item.append(app['app_id'])
         app_item.append(app['app_name'])
         app_item.append(app['package_name'])
-        app_item.append(CategoryUtil.get_category_name_by_id(app['category'][0:4]))
+        category = \
+            '''<div class="btn-group">''' + \
+            '''<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">''' + \
+            CategoryUtil.get_category_name_by_id(app['category'][0:4]) + \
+            '''<span class="caret"></span></button><ul class="dropdown-menu" role="menu" app_id="''' +\
+            str(app['app_id']) + '''"><ul></div>'''
         button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' + str(app['app_id']) + ''');">More</button>'''
+        app_item.append(category)
         app_item.append(button)
         result.append(app_item)
     return result
