@@ -11,7 +11,7 @@
             $.each data_detail, (index,detail) ->
                 head = "<h1><b>" + detail['platform'] + " | " + detail['version'] + "</b></h1>"
                 body = ""
-                body += "<div style='float: right;'><img src='" + detail['cover'] + "' /></div>"
+                body += "<div style='float: right;'><img src='" + detail['cover'] + "' style='max-width: 100px;'/></div>"
                 body += "<div><ul>"
                 body += "<li><b>文件大小：</b>" + detail['apk_size'] + "</li>" if detail['apk_size']
                 body += "<li><b>评分：</b>" + detail['rating_point'] + "分</li>" if detail['rating_point']
@@ -25,7 +25,7 @@
                 imgs_url = detail['imgs_url'].split(" ")
                 imgs = ""
                 $.each imgs_url, (index,img_url) ->
-                    imgs += "<img src='" + img_url + "' />"
+                    imgs += "<img src='" + img_url.replace(/https/,"http") + "' style='max-width: 230px;' />"
                 body += imgs
                 if index == 0
                     input_data += "<div style='padding-bottom: 30px;'>" + head + body + "</div>"

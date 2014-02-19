@@ -14,7 +14,7 @@ this.modal_select = function(app_id) {
         var body, head, imgs, imgs_url;
         head = "<h1><b>" + detail['platform'] + " | " + detail['version'] + "</b></h1>";
         body = "";
-        body += "<div style='float: right;'><img src='" + detail['cover'] + "' /></div>";
+        body += "<div style='float: right;'><img src='" + detail['cover'] + "' style='max-width: 100px;'/></div>";
         body += "<div><ul>";
         if (detail['apk_size']) {
           body += "<li><b>文件大小：</b>" + detail['apk_size'] + "</li>";
@@ -42,7 +42,7 @@ this.modal_select = function(app_id) {
         imgs_url = detail['imgs_url'].split(" ");
         imgs = "";
         $.each(imgs_url, function(index, img_url) {
-          return imgs += "<img src='" + img_url + "' />";
+          return imgs += "<img src='" + img_url.replace(/https/, "http") + "' style='max-width: 230px;' />";
         });
         body += imgs;
         if (index === 0) {
