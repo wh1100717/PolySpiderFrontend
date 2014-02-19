@@ -80,7 +80,7 @@ class AppList:
                     page_index = int(page_index)
                     if data[1] == 'total':
                         if page_index == 1:
-                                app_list = AppDao.app_list(row_number=1000)
+                                app_list = AppDao.app_list(row_number=500)
                         else:
                                 app_list = AppDao.app_list(page_index=page_index, row_number=5000)
                     else:
