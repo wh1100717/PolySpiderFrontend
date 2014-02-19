@@ -45,7 +45,7 @@ def get_today_status_by_platform(platform):
     today = str(datetime.date.today())
     data = redis_client.hget_all('status::' + today + '&' + platform)
     if not data:
-        yesterday = str(today - datetime.timedelta(days = 1))
+        yesterday = str(datetime.date.today() - datetime.timedelta(days = 1))
         if redis_client.exists('status::' + yesterday + '&' + platform):
             move_status_into_history(yesterday, platform)
         data = {'crawled': 0, 'new': 0, 'update': 0}

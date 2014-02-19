@@ -12,8 +12,7 @@ render_without_layout = web.template.render('templates/')
 urls = (
     '/api/app', AppController.app_app,
     '/api/status', StatusController.app_status,
-    '/(home/?)?', 'home',
-    '/status/?', 'status',
+    '/(status/?)?', 'status',
     '/chart/?', 'chart',
     '/data/(.*)', 'data',
     '/log/(.*)', 'log',
@@ -25,7 +24,7 @@ class home:
         return render.home()
 
 class status:
-    def GET(self):
+    def GET(self,name):
         return render.status()
 
 class chart:
