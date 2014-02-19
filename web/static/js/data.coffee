@@ -6,7 +6,7 @@
         "success": (data) ->
             data = eval("(" + data + ")")
             data_detail = data['app_detail']
-            console.log data_detail
+            data_detail.reverse()
             input_data = ""
             $.each data_detail, (index,detail) ->
                 head = "<h1><b>" + detail['platform'] + " | " + detail['version'] + "</b></h1>"

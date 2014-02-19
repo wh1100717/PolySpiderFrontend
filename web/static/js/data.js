@@ -8,7 +8,7 @@ this.modal_select = function(app_id) {
       var data_detail, input_data;
       data = eval("(" + data + ")");
       data_detail = data['app_detail'];
-      console.log(data_detail);
+      data_detail.reverse();
       input_data = "";
       $.each(data_detail, function(index, detail) {
         var body, head, imgs, imgs_url;

@@ -246,6 +246,10 @@ def get_category_id_by_name(category_name):
     if not CATEGORY_ID.get(category_name):
         flag = True
         category_map = {}
+        import os
+        if not os.path.isfile('un_record_category.txt'):
+            f = file("un_record_category.txt","w")
+            f.close()
         for line in open('un_record_category.txt','r'): 
             if line.strip() == category_name:
                 flag = False

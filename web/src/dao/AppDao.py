@@ -75,7 +75,6 @@ def platform_statistic():
     platform=['baiduapp','xiaomi','googleplay','hiapk','muzhiwan','appchina']
     platform_app_counts={}
     for i in platform:
-        print i
         platform_app_count=redis_client.hget('app::platform',i)
         if platform_app_count!=None:
             platform_app_count=eval(platform_app_count)
@@ -184,23 +183,15 @@ def update_category(app_id,updatecategory):
     redis_client.set_item('app::data',app_id,app)
     
 def category_reorder(categories):
-        print "---------------------"
-        print categories
-        print "---------------------"
         length = len(categories)
         for i in range(length - 1):
             for j in range(length - i - 1):
                 order_category = categories[j]
                 order_category_value = int(order_category[(order_category.find(":") + 1):])
-                print "older_value", order_category_value
                 cmp_category = categories[j + 1]
                 cmp_category_value = int(cmp_category[(cmp_category.find(":") + 1):])
-                print "cmp_value", cmp_category_value
                 if cmp_category_value > order_category_value:
                     categories[j], categories[j + 1] = categories[j + 1], categories[j]
-        print "---------------------"
-        print categories
-        print "---------------------"
         return categories
 
 def update_app_category(app_id, category):

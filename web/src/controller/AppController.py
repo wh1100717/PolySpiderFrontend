@@ -64,7 +64,6 @@ class PlatformStatistic:
                 for i in platform_App_counts:
                     result += '["'+ str(platform_list[i]) + '",'+str(platform_App_counts[i])+'],'
                 result=result[:-1] + ']'
-                print result
 		return result
 
 class AppList:
