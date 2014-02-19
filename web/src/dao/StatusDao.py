@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 from src.util import RedisUtil
-
-redis_client = RedisUtil.RedisClient()
-
 '''
 status::(date):
     存储格式为key-map_key-value
@@ -28,7 +25,20 @@ status::history:
                     update:0
                     }
                 }
+Note: 之所以把status::(data)和status::history分开，是因为status::history的存储结构导致不能实现具体某一个日期下某一个平台的数据自增功能
+举例说明，A服务器上的SpiderA抓取了platform1上的一个应用，那么需要对crawled进行+1操作，流程为取出目前存储的crawled数据，执行+1操作，再update redis中的crawled数据
+同时，B服务器中的SpiderB也抓取了platform1上得一个应用，如果在SpiderA update前，SpiderB就取出了crawled数据，那么最终的crawled结果不是crawled+2，而是crawled+1
+因此少统计了一次数据的抓取。
+为了解决这个问题，redis提供了incr操作，直接在data store端进行自+1操作，从而避免了数据的不准确性。
+而incr操作只支持value元数据，因此需要对当天的status单独处理，
 '''
+
+'''
+    ##初始化Redis
+    *   Redis的具体操作封装在了RedisUtil中
+    *   所有的redis操作利用redis_client来实现
+'''
+redis_client = RedisUtil.RedisClient()
 
 
 def get_today_status_by_platform(platform):

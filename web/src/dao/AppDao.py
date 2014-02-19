@@ -3,21 +3,42 @@
 from src.util import RedisUtil
 from src.util import StringUtil
 from src.util import CategoryUtil
-redis_client = RedisUtil.RedisClient()
+'''
+    app::amount:
+        用来实现app_id的auto_increasement功能
+    app::index:
+        用来做app_name和app_id的键值对应
+        存储格式为key-map_key-value   --> hash
+            key --> app::index
+            map_key --> app_name
+            value --> app_id
+    app::data:
+        用来存储app的数据
+        存储格式为key-index-value   --> list
+            key --> app::data
+            map_key --> app_id 
+            value --> 举例： 'app_id':0,'app_name':'QQ','author':'Tencent','category':'社交','app_detail':[{},{}]
+    app::category:
+        用来存储分类数据
+        存储格式为key-map_key-value   --> hash
+            key --> app::category
+            map_key --> category_id
+            value --> 包含了属于该分类下app_id的集合，类型为set
+    app::platform:
+        用来存储平台数据
+        存储格式为key-map_key-value   --> hash
+            key --> app::platform
+            map_key --> platform_name
+            value --> 包含了属于该平台下的分类app_id的集合，类型为set
+'''
+
 
 '''
-app::index:
-    存储格式为key-map_key-value
-        key --> app::index
-        map_key --> app_name
-        value --> app_id
-app::data:
-    存储格式为key-index-value
-        key --> app::data
-        map_key --> app_id 
-        value --> 举例： 'app_id':0,'app_name':'QQ','author':'Tencent','category':'社交','app_detail':[{},{}]
-   
+    ##初始化Redis
+    *   Redis的具体操作封装在了RedisUtil中
+    *   所有的redis操作利用redis_client来实现
 '''
+redis_client = RedisUtil.RedisClient()
 
 def get_app_count():
     '''
