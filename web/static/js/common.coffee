@@ -38,7 +38,7 @@ $ ->
 $ ->
 	crawled_number = $('#crawled_number')
 	timer = null
-	$.changeNum = ->
+	changeNum = ->
 		$.ajax(
 			url: "/api/app/get_app_count",
 			success: (data) ->
@@ -62,9 +62,10 @@ $ ->
 				return
 			)
 		return
+	changeNum()
 	setInterval((-> 
 		clearInterval timer
-		$.changeNum()
+		changeNum()
 		return), 6000)
 	return
 

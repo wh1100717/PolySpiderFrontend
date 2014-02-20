@@ -46,10 +46,10 @@ $ ->
  */
 
 $(function() {
-  var crawled_number, timer;
+  var changeNum, crawled_number, timer;
   crawled_number = $('#crawled_number');
   timer = null;
-  $.changeNum = function() {
+  changeNum = function() {
     $.ajax({
       url: "/api/app/get_app_count",
       success: function(data) {
@@ -74,8 +74,9 @@ $(function() {
       }
     });
   };
+  changeNum();
   setInterval((function() {
     clearInterval(timer);
-    $.changeNum();
+    changeNum();
   }), 6000);
 });
