@@ -9,24 +9,25 @@ from src.util import StringUtil
 
 
 urls = (
-	'/get_app_by_app_name', 'GetAppByAppName',
-	'/get_app_by_app_id', 'GetAppByAppId',
-	'/get_app_count', 'GetAppCount',
-	'/app_list/(.*)','AppList',
-	# '/get_app_list','GetAppList',
-	# '/get_app_list_by_default', 'GetAppListByDefault',
-	# '/get_app_list_by_platform/(.*)','GetAppListByPlatform',
-	# '/get_app_list_by_category/(.*)','GetAppListByCategory',
-	'/category_statistic', 'CategoryStatistic',
-	'/platform_statistic', 'PlatformStatistic',
-        '/update_category/(.*)/(.*)', 'UpdateCategory',
+    '/get_app_by_app_name', 'GetAppByAppName',
+    '/get_app_by_app_id', 'GetAppByAppId',
+    '/get_app_count', 'GetAppCount',
+    '/app_list/(.*)','AppList',
+    # '/get_app_list','GetAppList',
+    # '/get_app_list_by_default', 'GetAppListByDefault',
+    # '/get_app_list_by_platform/(.*)','GetAppListByPlatform',
+    # '/get_app_list_by_category/(.*)','GetAppListByCategory',
+    '/category_statistic', 'CategoryStatistic',
+    '/platform_statistic', 'PlatformStatistic',
+    '/update_category/(.*)/(.*)', 'UpdateCategory',    
 )
 class GetAppByAppName:
-	def GET(self):
-		paras = StringUtil.convert_query_to_paras(web.ctx.query)
-		app_name = paras['app_name']
-		app = AppDao.get_app_by_app_name(app_name)
-		return json.dumps(app)
+    def GET(self):
+        paras = StringUtil.convert_query_to_paras(web.ctx.query)
+        app_name = paras['app_name']
+
+        app = AppDao.get_app_by_app_name(app_name)
+        return json.dumps(app)
 
 class GetAppByAppId:
 	def GET(self):

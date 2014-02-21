@@ -28,6 +28,7 @@ def item_to_json(item):
 
 def convert_query_to_paras(query):
     if not query or query == "?": return {}
+    query = urllib.unquote(str(query)).decode('utf8')
     paras = {}
     queries = query[1:].split("&")
     for q in queries:
