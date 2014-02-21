@@ -46,26 +46,24 @@ class CategoryStatistic:
                 categorys=AppDao.category_statistic()
                 result = '['
                 for i in categorys:
-                    result += '["'+ str(CategoryUtil.get_category_name_by_id(i)) + '",'+str(categorys[i])+'],'
+                    if i == '3600':
+                        result += "{name:'" + str(CategoryUtil.get_category_name_by_id(i)) + "',y:" + str(categorys[i]) + ",sliced: true, selected: true},"
+                    else:
+                        result += "['"+ str(CategoryUtil.get_category_name_by_id(i)) + "'," + str(categorys[i])+ "],"
                 result=result[:-1] + ']'
 		return result
 
 class PlatformStatistic:
-	def GET(self):
-                platform_App_counts=AppDao.platform_statistic()
-                platform_list={
-                    "muzhiwan":"拇指玩",
-                    "googleplay":"Google市场",
-                    "baiduapp":"百度应用市场",
-                    "xiaomi":"小米应用市场",
-                    "appchina":"应用汇",
-                    "hiapk":"安卓市场"
-                }
-                result = '['
-                for i in platform_App_counts:
-                    result += '["'+ str(platform_list[i]) + '",'+str(platform_App_counts[i])+'],'
-                result=result[:-1] + ']'
-		return result
+    def GET(self):
+        platforms = AppDao.platform_statistic()
+        result = '['
+        for platform in platforms:
+            if platform == 'googleplay':
+                result += "{name:'" + platform + "',y:" + str(platforms[platform]) + ",sliced: true, selected: true},"
+            else:
+                result += "['" + platform + "'," + str(platforms[platform]) + '],'
+        result=result[:-1] + ']'
+        return result
 
 class AppList:
 	def GET(self,page_index):
