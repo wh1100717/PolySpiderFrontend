@@ -113,22 +113,27 @@ def app_list(page_index = 1,row_number = 20):
     app_list = redis_client.get_items('app::data', (page_index-1)*row_number+1, page_index * row_number + 1)
     for app in app_list:
         if app == "0":continue
-        app_item = []
-        app = eval(app)
-        app_item.append(app['app_id'])
-        app_item.append(app['app_name'])
-        app_item.append(app['package_name'])
-        category = \
-            '''<div class="btn-group">''' + \
-            '''<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">''' + \
-            CategoryUtil.get_category_name_by_id(app['category'][0:4]) + \
-            '''<span class="caret"></span></button><ul class="dropdown-menu" role="menu" app_id="''' +\
-            str(app['app_id']) + '''"><ul></div>'''
-        button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' +\
-            str(app['app_id']) + ''');">More</button>'''
-        app_item.append(category)
-        app_item.append(button)
-        result.append(app_item)
+        try:
+            app_item = []
+            app = eval(app)
+            app_item.append(app['app_id'])
+            app_item.append(app['app_name'])
+            app_item.append(app['package_name'])
+            category = \
+                '''<div class="btn-group">''' + \
+                '''<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">''' + \
+                CategoryUtil.get_category_name_by_id(app['category'][0:4]) + \
+                '''<span class="caret"></span></button><ul class="dropdown-menu" role="menu" app_id="''' +\
+                str(app['app_id']) + '''"><ul></div>'''
+            button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' +\
+                str(app['app_id']) + ''');">More</button>'''
+            app_item.append(category)
+            app_item.append(button)
+            result.append(app_item)
+        except Exception, e:
+            print e
+            continue
+
     return result
 
 def get_app_list_by_categroy(category,page_index = 1,row_number = 200):
@@ -141,22 +146,26 @@ def get_app_list_by_categroy(category,page_index = 1,row_number = 200):
     app_list=redis_client.get_items_with_index_list('app::data',apps[(page_index-1)*row_number:page_index*row_number])
     for app in app_list:
         if app == "0":continue
-        app_item = []
-        app = eval(app)
-        app_item.append(app['app_id'])
-        app_item.append(app['app_name'])
-        app_item.append(app['package_name'])
-        category = \
-            '''<div class="btn-group">''' + \
-            '''<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">''' + \
-            CategoryUtil.get_category_name_by_id(app['category'][0:4]) + \
-            '''<span class="caret"></span></button><ul class="dropdown-menu" role="menu" app_id="''' +\
-            str(app['app_id']) + '''"><ul></div>'''
-        button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' +\
-            str(app['app_id']) + ''');">More</button>'''
-        app_item.append(category)
-        app_item.append(button)
-        result.append(app_item)
+        try:
+            app_item = []
+            app = eval(app)
+            app_item.append(app['app_id'])
+            app_item.append(app['app_name'])
+            app_item.append(app['package_name'])
+            category = \
+                '''<div class="btn-group">''' + \
+                '''<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">''' + \
+                CategoryUtil.get_category_name_by_id(app['category'][0:4]) + \
+                '''<span class="caret"></span></button><ul class="dropdown-menu" role="menu" app_id="''' +\
+                str(app['app_id']) + '''"><ul></div>'''
+            button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' +\
+                str(app['app_id']) + ''');">More</button>'''
+            app_item.append(category)
+            app_item.append(button)
+            result.append(app_item)
+        except Exception, e:
+            print e
+            continue
     return result
 
 
@@ -170,22 +179,26 @@ def get_app_list_by_platform(platform,page_index = 1,row_number = 20):
     app_list=redis_client.get_items_with_index_list('app::data',apps[(page_index-1)*row_number:page_index*row_number])
     for app in app_list:
         if app == "0":continue
-        app_item = []
-        app = eval(app)
-        app_item.append(app['app_id'])
-        app_item.append(app['app_name'])
-        app_item.append(app['package_name'])
-        category = \
-            '''<div class="btn-group">''' + \
-            '''<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">''' + \
-            CategoryUtil.get_category_name_by_id(app['category'][0:4]) + \
-            '''<span class="caret"></span></button><ul class="dropdown-menu" role="menu" app_id="''' +\
-            str(app['app_id']) + '''"><ul></div>'''
-        button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' +\
-            str(app['app_id']) + ''');">More</button>'''
-        app_item.append(category)
-        app_item.append(button)
-        result.append(app_item)
+        try:
+            app_item = []
+            app = eval(app)
+            app_item.append(app['app_id'])
+            app_item.append(app['app_name'])
+            app_item.append(app['package_name'])
+            category = \
+                '''<div class="btn-group">''' + \
+                '''<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">''' + \
+                CategoryUtil.get_category_name_by_id(app['category'][0:4]) + \
+                '''<span class="caret"></span></button><ul class="dropdown-menu" role="menu" app_id="''' +\
+                str(app['app_id']) + '''"><ul></div>'''
+            button = '''<button class="btn btn-info" data-toggle="modal" data-target="#app_detail_modal" onclick="modal_select(''' +\
+                str(app['app_id']) + ''');">More</button>'''
+            app_item.append(category)
+            app_item.append(button)
+            result.append(app_item)
+        except Exception, e:
+            print e
+            continue
     return result    
 
 '''
