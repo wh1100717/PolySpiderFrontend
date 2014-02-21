@@ -40,7 +40,7 @@ this.modal_select = function(app_id) {
         body += "</ul></div>";
         body += "<p>" + detail['description'] + "</p>";
         imgs_url = detail['imgs_url'].split(" ");
-        imgs = "<div style='max-width: 800px;padding-left: 20%;padding-right: 20%;'><div id='img-slide" + index + "' class='carousel slide' data-ride='carousel'><ol class='carousel-indicators'>";
+        imgs = "<div class='spacer'></div><div style='max-width: 800px;padding-left: 20%;padding-right: 20%;'><div id='img-slide" + index + "' class='carousel slide' data-ride='carousel'><ol class='carousel-indicators'>";
         $.each(imgs_url, function(img_index) {
           if (img_index === 0) {
             return imgs += "<li data-target='#img-slide" + index + "' data-slide-to='0' class='active'></li>";
@@ -56,7 +56,7 @@ this.modal_select = function(app_id) {
             return imgs += "<div class='item' style='padding-left: 30%;padding-bottom: 20px;'><img src='" + img_url + "'></div>";
           }
         });
-        imgs += "</div><a class='left carousel-control' href='#img-slide" + index + "' data-slide='prev'><span class='glyphicon glyphicon-chevron-left'></span></a><a class='right carousel-control' href='#img-slide" + index + "' data-slide='next'><span class='glyphicon glyphicon-chevron-right'></span></a></div></div>";
+        imgs += "</div><a class='left carousel-control' href='#img-slide" + index + "' data-slide='prev'><span class='glyphicon glyphicon-chevron-left'></span></a><a class='right carousel-control' href='#img-slide" + index + "' data-slide='next'><span class='glyphicon glyphicon-chevron-right'></span></a></div></div><div class='spacer'></div>";
         body += imgs;
         if (index === 0) {
           return input_data += "<div style='padding-bottom: 30px;'>" + head + body + "</div>";

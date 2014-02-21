@@ -26,7 +26,7 @@
                 # imgs = ""
                 # $.each imgs_url, (index,img_url) ->
                 #     imgs += "<img src='" + img_url.replace(/https/,"http") + "' style='max-width: 230px;' />"
-                imgs = "<div style='max-width: 800px;padding-left: 20%;padding-right: 20%;'><div id='img-slide#{index}' class='carousel slide' data-ride='carousel'><ol class='carousel-indicators'>"
+                imgs = "<div class='spacer'></div><div style='max-width: 800px;padding-left: 20%;padding-right: 20%;'><div id='img-slide#{index}' class='carousel slide' data-ride='carousel'><ol class='carousel-indicators'>"
                 $.each imgs_url, (img_index) ->
                     if img_index is 0
                         imgs += "<li data-target='#img-slide#{index}' data-slide-to='0' class='active'></li>"
@@ -38,7 +38,7 @@
                         imgs += "<div class='item active' style='padding-left: 30%;padding-bottom: 20px;'><img src='#{img_url}''></div>"
                     else
                         imgs += "<div class='item' style='padding-left: 30%;padding-bottom: 20px;'><img src='#{img_url}'></div>"
-                imgs += "</div><a class='left carousel-control' href='#img-slide#{index}' data-slide='prev'><span class='glyphicon glyphicon-chevron-left'></span></a><a class='right carousel-control' href='#img-slide#{index}' data-slide='next'><span class='glyphicon glyphicon-chevron-right'></span></a></div></div>"
+                imgs += "</div><a class='left carousel-control' href='#img-slide#{index}' data-slide='prev'><span class='glyphicon glyphicon-chevron-left'></span></a><a class='right carousel-control' href='#img-slide#{index}' data-slide='next'><span class='glyphicon glyphicon-chevron-right'></span></a></div></div><div class='spacer'></div>"
 
                 body += imgs
                 if index == 0

@@ -9,8 +9,8 @@
 	*	db: redis中配置的数据库编号，默认为0
 '''
 REDIS = {
-#    'host':'192.168.1.202',
-	'host': 'localhost',
+    'host':'192.168.1.92',
+#	'host': 'localhost',
     'password':'',
     'port':6379,
     'db':0
