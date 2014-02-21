@@ -40,10 +40,23 @@ this.modal_select = function(app_id) {
         body += "</ul></div>";
         body += "<p>" + detail['description'] + "</p>";
         imgs_url = detail['imgs_url'].split(" ");
-        imgs = "";
-        $.each(imgs_url, function(index, img_url) {
-          return imgs += "<img src='" + img_url.replace(/https/, "http") + "' style='max-width: 230px;' />";
+        imgs = "<div style='max-width: 800px;padding-left: 20%;padding-right: 20%;'><div id='img-slide" + index + "' class='carousel slide' data-ride='carousel'><ol class='carousel-indicators'>";
+        $.each(imgs_url, function(img_index) {
+          if (img_index === 0) {
+            return imgs += "<li data-target='#img-slide" + index + "' data-slide-to='0' class='active'></li>";
+          } else {
+            return imgs += "<li data-target='#img-slide" + index + "' data-slide-to='" + img_index + "'></li>";
+          }
         });
+        imgs += "</ol><div class='carousel-inner'>";
+        $.each(imgs_url, function(img_index, img_url) {
+          if (img_index === 0) {
+            return imgs += "<div class='item active' style='padding-left: 30%;padding-bottom: 20px;'><img src='" + img_url + "''></div>";
+          } else {
+            return imgs += "<div class='item' style='padding-left: 30%;padding-bottom: 20px;'><img src='" + img_url + "'></div>";
+          }
+        });
+        imgs += "</div><a class='left carousel-control' href='#img-slide" + index + "' data-slide='prev'><span class='glyphicon glyphicon-chevron-left'></span></a><a class='right carousel-control' href='#img-slide" + index + "' data-slide='next'><span class='glyphicon glyphicon-chevron-right'></span></a></div></div>";
         body += imgs;
         if (index === 0) {
           return input_data += "<div style='padding-bottom: 30px;'>" + head + body + "</div>";
