@@ -29,7 +29,7 @@ $ ->
 						xiaomi_crawled_data.push [date, parseInt platform_data.crawled] if platform_data.crawled
 						xiaomi_new_data.push [date, parseInt platform_data.new] if platform_data.new
 						xiaomi_update_data.push [date, parseInt platform_data.update] if platform_data.update
-					when 'baidu'
+					when 'baiduapp'
 						baidu_crawled_data.push [date, parseInt platform_data.crawled] if platform_data.crawled
 						baidu_new_data.push [date, parseInt platform_data.new] if platform_data.new
 						baidu_update_data.push [date, parseInt platform_data.update] if platform_data.update
@@ -120,7 +120,7 @@ $ ->
 										series[0].addPoint [x, parseInt platform_data.crawled], true, true
 										series[1].addPoint [x, parseInt platform_data.new], true, true
 										series[2].addPoint [x, parseInt platform_data.update], true, true
-									when "baidu"
+									when "baiduapp"
 										series[3].addPoint [x, parseInt platform_data.crawled], true, true
 										series[4].addPoint [x, parseInt platform_data.new], true, true
 										series[5].addPoint [x, parseInt platform_data.update], true, true

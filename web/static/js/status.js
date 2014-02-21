@@ -39,7 +39,7 @@ $(function() {
               xiaomi_update_data.push([date, parseInt(platform_data.update)]);
             }
             break;
-          case 'baidu':
+          case 'baiduapp':
             if (platform_data.crawled) {
               baidu_crawled_data.push([date, parseInt(platform_data.crawled)]);
             }
@@ -276,7 +276,7 @@ $(function() {
                     series[1].addPoint([x, parseInt(platform_data["new"])], true, true);
                     series[2].addPoint([x, parseInt(platform_data.update)], true, true);
                     break;
-                  case "baidu":
+                  case "baiduapp":
                     series[3].addPoint([x, parseInt(platform_data.crawled)], true, true);
                     series[4].addPoint([x, parseInt(platform_data["new"])], true, true);
                     series[5].addPoint([x, parseInt(platform_data.update)], true, true);
