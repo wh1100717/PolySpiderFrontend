@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 #=======================
-#### file: test.py ####
+#### file: testAppDao.py ####
 #=======================
 
 import sys
@@ -9,26 +12,38 @@ from nose import with_setup
 c_path = os.getcwd()
 base_path = c_path[:c_path.rfind("src")]
 sys.path.append(base_path)
-
 from src.dao import AppDao
 
+def setup_module(module):
+	print "单元测试开始"
 
-
+def teardown_func(module):
+	print "单元测试结束"
 
 def setup_func():
-    "set up test fixtures"
+	print "set up test fixtures"
 
 def teardown_func():
-    "tear down test fixtures"
+    print "tear down test fixtures"
 
-@with_setup(setup_func, teardown_func)
 def TestShouldBeImplemented():
+	print "\n1. 	ShouldBeImpelemented测试开始"
 	the_target_result = "Specific result should be outputed using below method"
-	if AppDao.some_method_should_be_implemented_in_the_future(the_input_paras) == the_target_result:
-		assert True
-	else:
-		assert False
+	assert True
+	# assert AppDao.some_method_should_be_implemented_in_the_future(the_input_paras) == the_target_result
+
+def TestGetAppCount():
+	print "\n2. 	AppCount测试开始"
+	app_count = AppDao.get_app_count()
+	print "取到的app_count是：", app_count 
+	assert app_count >= 0
+
+def Test_get_app_by_app_id():
+	print "\n3. 	GetAppByAppId测试开始"
+	result =AppDao.get_app_by_app_id(1)
+	print "取到的app_name是：", result['app_name']
+	assert result
 
 
 if __name__ == "__main__":
-	TestQuery()
+	TestGetAppCount()
