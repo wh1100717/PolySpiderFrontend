@@ -55,8 +55,7 @@ $ ->
                 },
                 tooltip: {
                     pointFormat: '{series.name.percent}: <b>{point.percentage:.1f}%</b><br>{series.name.count}: <b>{point.y}</b><br>'
-                },
-                plotOptions: {
+                },                plotOptions: {
                     pie: {
                         allowPointSelect: true,
                         cursor: 'pointer',
