@@ -30,12 +30,44 @@ REDIS = {
     *   app_total要获取的应用总数，默认300
 '''
 MySQL={
-    'host':'192.168.1.105',
+    'host':'localhost',
     'password':'123456',
     'user':'root',
     'db':'test',
     'charset':'utf8',
     'port':3306
+}
+
+CATEGORY_NAME = {
+    '0'   :'未分类',  
+    '1000':'个性化',
+    '1100':'交通运输',
+    '1200':'体育',
+    '1300':'健康与健身',
+    '1400':'动态壁纸',
+    '1500':'动漫',
+    '1600':'医药',
+    '1700':'商务',
+    '1800':'图书与工具书',
+    '1900':'天气',
+    '2000':'娱乐',
+    '2100':'媒体与视频',
+    '2200':'小部件',
+    '2300':'工具',
+    '2400':'摄影',
+    '2500':'效率',
+    '2600':'教育',
+    '2700':'新闻杂志',
+    '2800':'旅游与本地出行',
+    '2900':'生活时尚',
+    '3000':'社交',
+    '3100':'财务',
+    '3200':'购物',
+    '3300':'软件与演示',
+    '3400':'通讯',
+    '3500':'音乐与音频',
+    '3600':'游戏',
+    '3700':'其他'
 }
 
 
@@ -65,36 +97,46 @@ class HotApps:
             return False
         return True
 
-
-    def _save_list_to_mysql(self, app_list):
+    def _save_app_to_mysql(self, app):
         try:
             cur = self.conn.cursor()
-            sql = "INSERT INTO mdm_disapp_appinfo (app_version, app_name, app_package, app_icon, app_size, app_type, app_from, app_url, app_desc,platform, create_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            cur.executemany(sql,app_list)            
+            query_sql = "SELECT * from mdm_disapp_appinfo where app_name = '%s'" %app[1]
+            count = cur.execute(query_sql)
+            if count == 0:
+                insert_sql = "INSERT INTO mdm_disapp_appinfo (app_version, app_name, app_package, app_icon, app_size, app_type, app_from, app_url, app_desc,platform, create_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                cur.execute(insert_sql, app)
+                self.conn.commit()
         except Exception, e:
             print Exception, e
             print traceback.format_exc()
-            return False
         finally:
             cur.close()
 
 
+    def _get_category_name_by_id(self,category_id):
+        category_name = CATEGORY_NAME.get(category_id)
+        return category_name if category_name else "无"
+
     def populate(self):
         start_index = 0
         while True:
-            print "start to populate apps from %d to %d" %(start_index, start_index + 100)
-            app_list = self.redis_client.lrange('app::data', start_index, start_index + 100)
-            app_infos = []
+            if start_index >= self.app_max: break
+            if start_index + 100 > self.app_max:
+                end_index = start_index - self.app_max
+            else:
+                end_index = start_index + 100
+            print "start to populate apps from %d to %d" %(start_index, end_index)
+            app_list = self.redis_client.lrange('app::data', start_index, end_index)
             if len(app_list) == 0: break
             for app in app_list:
+
                 if not app: continue
                 try:
                     app = eval(app)
-                    if not self._filter(app): continue
-                    app_id = redis_client.hget('app::index', app_list[0])
-                    app=eval(redis_client.lindex('app::data',app_id))
                     #获取app分类
-                    app_type=app_list[1]
+                    app_type = app['category'].encode('utf8', 'ignore').split(',')
+                    app_type.sort(key=lambda x:int(x.split(':')[1]))
+                    app_type = self._get_category_name_by_id(app_type[0].split(':')[0])
                     #app名称
                     app_name = app['app_name'].encode('utf8', 'ignore')
                     #获取app的package_name
@@ -112,35 +154,32 @@ class HotApps:
                     #获取cover
                     app_icon = app_detail['cover'].encode('utf8', 'ignore')
                     #获取app_size
-                    app_size = '0'
+                    app_size = 0
                     #获取app_from
                     app_from = app_detail['platform'].encode('utf8', 'ignore')
                     #获取app_desc
                     app_desc = 'null'
                     #获取download_times
-                    app_download_times=app_detail['download_times'].encode('utf8', 'ignore')
+                    app_download_times = app_detail['download_times'].encode('utf8', 'ignore')
                     #获取cover
-                    cover=app_detail['cover']
+                    cover = app_detail['cover']
                     #获取creat_time
                     # create_time = app1_detail['last_update'].encode('utf8', 'ignore')
                     create_time = '2014-3-14'
                     #Mysql数据库
-                    app_info=[app_version,app_name,app_package,app_icon,app_size,app_type,app_from,app_url,app_desc,platform,create_time]
-                    
-                    app_infos.append(app_info)                    
+                    print "processing: ", app_name
+                    app_info = (app_version,app_name,app_package,app_icon,app_size,app_type,app_from,app_url,app_desc,platform,create_time)
+                    self._save_app_to_mysql(app_info)
                 except Exception, e:
                     print Exception, e
                     print traceback.format_exc()
-            try:
-                #持久化到mysql
-                self._save_list_to_mysql(app_infos)                
-            except Exception, e:
-                print Exception, e
-                print traceback.format_exc()
-    
+            start_index += 100
+            
 
 if __name__ == "__main__":
     import argparse
+
+    print "use `python populate.py -h[--help]` to find more configuration"
 
     start_time = time.time()
     # 通过argParse进行命令行配置
