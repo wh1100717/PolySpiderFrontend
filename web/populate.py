@@ -76,26 +76,43 @@ class HotApps:
     def __init__(self, args):
         pool = redis.ConnectionPool(host=REDIS['host'], password=REDIS['password'], port=REDIS['port'], db=REDIS['db'])
         self.redis_client = redis.Redis(connection_pool=pool)
-        self.conn = MySQLdb.connect(host=MySQL['host'],user=MySQL['user'],passwd=MySQL['password'],db=MySQL['db'],port=MySQL['port'],charset=MySQL['charset'])
         self.app_max = args.app_max
         self.weight = args.weight
+        self.output_type = args.output_type
+        self.hot_count = 0
+        if self.output_type == 'file':
+            if not os.path.isfile('app_list.sql'):
+                f = file("app_list.sql","w")
+                f.close()
+        else:
+            self.conn = MySQLdb.connect(host=MySQL['host'],user=MySQL['user'],passwd=MySQL['password'],db=MySQL['db'],port=MySQL['port'],charset=MySQL['charset'])
 
-    def _filter(self, app):
-        if not app: return False
+
+    def _weight(self, app):
+        if not app: return 0
+        w = 0
         try:
             categories = app['category'].encode('utf8','ignore').split(',')
-            print "processing ",app['app_name']
-            w = 0
             for t in categories:
                 val = int(t.split(':')[1])
                 w += 10 if val > 1000 else val
-            if w < self.weight: return False
-            if len(app['app_detail'])==1 and app['app_detail'][0]['platform']=='googleplay': return False
+            if w < self.weight: return 0
+            if len(app['app_detail'])==1 and app['app_detail'][0]['platform']=='googleplay': return 0
         except Exception, e:
             print Exception, e
             print traceback.format_exc()
-            return False
-        return True
+            return 0
+        return w
+
+    def _get_category_name_by_id(self,category_id):
+        category_name = CATEGORY_NAME.get(category_id)
+        return category_name if category_name else "无"
+
+    def _save_app_to_file(self, app):
+        insert_sql = "INSERT INTO mdm_disapp_appinfo (app_version, app_name, app_package, app_icon, app_size, app_type, app_from, app_url, app_desc,platform, create_time) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" %tuple(map(lambda x: '"' + str(x) + '"', app))
+        with open('app_list.sql','a') as f: 
+            f.write(insert_sql + "\n")
+
 
     def _save_app_to_mysql(self, app):
         try:
@@ -112,27 +129,20 @@ class HotApps:
         finally:
             cur.close()
 
-
-    def _get_category_name_by_id(self,category_id):
-        category_name = CATEGORY_NAME.get(category_id)
-        return category_name if category_name else "无"
-
     def populate(self):
         start_index = 0
         while True:
-            if start_index >= self.app_max: break
-            if start_index + 100 > self.app_max:
-                end_index = start_index - self.app_max
-            else:
-                end_index = start_index + 100
-            print "start to populate apps from %d to %d" %(start_index, end_index)
-            app_list = self.redis_client.lrange('app::data', start_index, end_index)
+            if self.hot_count >= self.app_max: break
+            print "start to populate apps from %d to %d" %(start_index, start_index + 100)
+            app_list = self.redis_client.lrange('app::data', start_index, start_index + 100)
             if len(app_list) == 0: break
             for app in app_list:
-
+                if self.hot_count >= self.app_max: break
                 if not app: continue
                 try:
                     app = eval(app)
+                    weight = self._weight(app)
+                    if weight == 0: continue
                     #获取app分类
                     app_type = app['category'].encode('utf8', 'ignore').split(',')
                     app_type.sort(key=lambda x:int(x.split(':')[1]))
@@ -154,7 +164,7 @@ class HotApps:
                     #获取cover
                     app_icon = app_detail['cover'].encode('utf8', 'ignore')
                     #获取app_size
-                    app_size = 0
+                    app_size = weight
                     #获取app_from
                     app_from = app_detail['platform'].encode('utf8', 'ignore')
                     #获取app_desc
@@ -169,7 +179,11 @@ class HotApps:
                     #Mysql数据库
                     print "processing: ", app_name
                     app_info = (app_version,app_name,app_package,app_icon,app_size,app_type,app_from,app_url,app_desc,platform,create_time)
-                    self._save_app_to_mysql(app_info)
+                    if self.output_type == 'file':
+                        self._save_app_to_file(app_info)
+                    else:
+                        self._save_app_to_mysql(app_info)
+                    self.hot_count += 1
                 except Exception, e:
                     print Exception, e
                     print traceback.format_exc()
@@ -185,9 +199,11 @@ if __name__ == "__main__":
     # 通过argParse进行命令行配置
     parser = argparse.ArgumentParser(description='Populate most hot apps')
     # 设置需要抓取的城市
-    parser.add_argument('-m', type=str, dest="app_max", default=2000,
+    parser.add_argument('-m', type=str, dest="app_max", default=10000000,
                         help="config the max hot apps number, 2000 by default")
     parser.add_argument('-w', type=int, dest="weight", default=6, help="config the weight to filter apps, 6 by default")
+
+    parser.add_argument('-t', type=str, dest="output_type", default='file', help="config the output type, file by default means output, mysql is another option")
     args = parser.parse_args()
 
     hot_apps = HotApps(args)
