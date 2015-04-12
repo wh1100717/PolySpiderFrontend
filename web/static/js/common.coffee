@@ -47,7 +47,7 @@ $ ->
 				old_n = crawled_number.html()
 				if old_n is ""
 					$('#crawled_number_span').fadeIn()
-					old_n = Math.max Math.round(new_n*0.9),(new_n-300)
+					old_n = Math.max Math.round(new_n*0.9),(new_n-100)
 				else
 					old_n = parseInt old_n
 				count = 1

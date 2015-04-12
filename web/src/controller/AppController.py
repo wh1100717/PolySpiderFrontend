@@ -30,11 +30,11 @@ class GetAppByAppName:
         return json.dumps(app)
 
 class GetAppByAppId:
-	def GET(self):
-		paras = StringUtil.convert_query_to_paras(web.ctx.query)
-		app_id = paras['app_id']
-		app = AppDao.get_app_by_app_id(app_id)
-		return json.dumps(app)
+    def GET(self):
+        paras = StringUtil.convert_query_to_paras(web.ctx.query)
+        app_id = paras['app_id']
+        app = AppDao.get_app_by_app_id(app_id)
+        return json.dumps(app)
 
 class GetAppCount:
 	def GET(self):
